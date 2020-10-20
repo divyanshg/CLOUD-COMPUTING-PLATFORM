@@ -1,0 +1,192 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<style>
+    .theme-bg {
+        background-color: #36393f;
+    }
+
+    .theme-text {
+        color: #202225;
+    }
+
+    .theme-darker-bg {
+        background-color: #202225;
+    }
+
+    .theme-dark-bg {
+        background-color: #2f3136;
+    }
+
+    .left-nav {
+        width: 250px;
+        left: 4rem;
+        top: 48px;
+        height: calc(100% - 48px);
+    }
+
+    .right-nav {
+        width: 350px;
+        right: 0px;
+        top: 48px;
+        height: calc(100% - 48px);
+    }
+
+    .main {
+        width: 65%;
+        margin: auto;
+        position: fixed;
+        left: 19.625rem;
+    }
+
+    .topnav {
+        width: calc(100% - 4rem);
+        left: 4rem;
+        border-color: #2f3136;
+    }
+
+    .topnav .leftPart {
+        width: 15.625rem;
+        border-color: #202225;
+    }
+
+    .topnav .centerPart {
+        width: calc(100% - 15.625rem);
+        left: 15.625rem;
+        border-color: #2f3136;
+    }
+
+    .project-icon {
+        transition: 0.02s ease all;
+        cursor: pointer;
+    }
+
+    .project-icon:hover {
+        border-radius: 16px;
+    }
+
+    .widget,
+    .dataBlock {
+        -webkit-transition: all .3s ease-in-out;
+        -moz-transition: all .3s ease-in-out;
+        -o-transition: all .3s ease-in-out;
+        transition: all .3s ease-in-out;
+    }
+
+    .widgetShake {
+        /* Start the shake animation and make the animation last for 0.5 seconds */
+        animation: shake 0.5s;
+
+        /* When the animation is finished, start again */
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes shake {
+
+        /* start at 0deg and this scale size.
+         scale size is repeated here to maintain smooth scaling */
+        0% {
+            transform: rotate(0deg);
+        }
+
+        /* midway rotate 2deg right */
+        50% {
+            transform: rotate(2deg);
+        }
+
+        /* end rotate -2deg left */
+        100% {
+            transform: rotate(-2deg)
+        }
+    }
+
+    .widgetButton {
+        position: relative;
+        display: inline-block;
+    }
+
+    .widgetButton a {
+        color: white;
+        font-family: Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 36px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #667eea;
+        display: block;
+        position: relative;
+        padding: 20px 40px;
+
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        text-shadow: 0px 1px 0px #000;
+        filter: dropshadow(color=#000, offx=0px, offy=1px);
+
+        -webkit-box-shadow: inset 0 1px 0 #b493ff, 0 10px 0 #05209a;
+        -moz-box-shadow: inset 0 1px 0 #b493ff, 0 10px 0 #05209a;
+        box-shadow: inset 0 1px 0 #b493ff, 0 10px 0 #05209a;
+
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    .widgetButton a:active {
+        top: 10px;
+        background-color: #667eea;
+
+        -webkit-box-shadow: inset 0 1px 0 #b493ff, inset 0 -3px 0 #05209a;
+        -moz-box-shadow: inset 0 1px 0 #b493ff, inset 0 -3pxpx 0 #05209a;
+        box-shadow: inset 0 1px 0 #b493ff, inset 0 -3px 0 #05209a;
+    }
+
+    .widgetButton:after {
+        content: "";
+        height: 100%;
+        width: 100%;
+        padding: 4px;
+        position: absolute;
+        bottom: -15px;
+        left: -4px;
+        z-index: -1;
+        background-color: #2B1800;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #000000;
+        color: white;
+        padding: 8px;
+        z-index: 100;
+    }
+
+    .skip-link:focus {
+        top: 0;
+    }
+
+    .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url(https://tailwindui.com/img/logos/workflow-mark-on-dark.svg) center no-repeat #fff;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(window).load(function () {
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");;
+    });
+</script>

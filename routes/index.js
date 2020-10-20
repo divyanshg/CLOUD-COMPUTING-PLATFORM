@@ -5,32 +5,29 @@ const bcrypt = require('bcrypt')
 const passport = require('passport')
 
 const user = require('../models/getUser')
-const usersAuthorizer = require('../authorizers/users') 
+const { checkAuthenticated, checkNotAuthenticated } = require('../authorizers/users')
+
+const { renderDashboard, renderActivity } = require('../view-renderers/dashboard')
 
 const initializePassport = require('../configs/passport-config')
 
 initializePassport(passport)
 
+router.get('/login', checkNotAuthenticated, (req, res) => res.render('./accounts/login.ejs'))
 
-router.get('/', (req, res) => res.render('index.ejs'))
-
-//Login Routes
-
-router.get('/login', usersAuthorizer.checkNotAuthenticated, (req, res) => res.render('login.ejs'))
-
-router.post('/login', usersAuthorizer.checkNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/console',
+router.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+    successRedirect: '/dashboard',
     failureRedirect: '/login',
     failureFlash: true
 }))
 
 //Register Routes
 
-router.get('/register', usersAuthorizer.checkNotAuthenticated, (req, res) => res.render('register.ejs'))
+router.get('/register', checkNotAuthenticated, (req, res) => res.render('register.ejs'))
 
-router.post('/register', usersAuthorizer.checkNotAuthenticated, async (req, res) => {
+router.post('/register', checkNotAuthenticated, async (req, res) => {
 
-    try{
+    try {
 
         const hashedPass = await bcrypt.hash(req.body.pass, 10)
 
@@ -43,7 +40,7 @@ router.post('/register', usersAuthorizer.checkNotAuthenticated, async (req, res)
 
         res.redirect('/login')
 
-    } catch{
+    } catch {
 
         res.redirect('/register')
 
@@ -55,14 +52,21 @@ router.post('/register', usersAuthorizer.checkNotAuthenticated, async (req, res)
 
 //Logout Route
 
-router.delete('/logout', usersAuthorizer.checkAuthenticated, (req, res) => {
+router.delete('/logout', checkAuthenticated, (req, res) => {
     req.logOut()
     res.redirect('/login')
 })
 
-//Other Routes
 
-router.get('/console', usersAuthorizer.checkAuthenticated, (req, res) => res.render('console.ejs', { name: req.user.name }))
 
+router.get('/dashboard', checkAuthenticated, renderDashboard)
+router.get('/dashboard/connIntro', checkAuthenticated, (req, res) => {
+    res.render('create/intro.ejs')
+})
+router.get('/activity', checkAuthenticated, renderActivity)
+
+router.get('/deviceIcon/:iconsrc', checkAuthenticated, (req, res) => {
+    res.sendFile(__dirname + '/icons/'+ req.params.iconsrc)
+})
 
 module.exports = router

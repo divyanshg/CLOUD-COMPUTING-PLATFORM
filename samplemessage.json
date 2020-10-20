@@ -1,0 +1,78 @@
+{
+    "id": 293522617,
+    "parentId": -1,
+    "isPreview": false,
+    "name": "Demo project",
+    "createdAt": 1600340729916,
+    "updatedAt": 1600341144553,
+    "rows": [ "someid", "anotherid" ],
+    "widgets": [{
+        "type": "BUTTON",
+        "inRow": "someid",
+        "id": 34061,
+        "pos": 2,
+        "color": 600084223,
+        "label": "On Off",
+        "isDefaultColor": true,
+        "deviceId": 0,
+        "pin": -1,
+        "pwmMode": false,
+        "rangeMappingOn": false,
+        "min": 0.0,
+        "max": 1.0,
+        "value": "0.0",
+        "pushMode": true,
+        "fontSize": "MEDIUM"
+    }, {
+        "type": "RGB",
+        "inRow": "anotherid",
+        "id": 986,
+        "x": 0,
+        "y": 2,
+        "color": 600084223,
+        "width": 4,
+        "height": 3,
+        "tabId": 0,
+        "isDefaultColor": false,
+        "deviceId": 0,
+        "splitMode": true,
+        "sendOnReleaseOn": true,
+        "frequency": 100,
+        "pins": [{
+            "pin": -1,
+            "pwmMode": false,
+            "rangeMappingOn": false,
+            "min": 0.0,
+            "max": 255.0
+        }, {
+            "pin": -1,
+            "pwmMode": false,
+            "rangeMappingOn": false,
+            "min": 0.0,
+            "max": 255.0
+        }, {
+            "pin": -1,
+            "pwmMode": false,
+            "rangeMappingOn": false,
+            "min": 0.0,
+            "max": 255.0
+        }]
+    }],
+    "devices": [{
+        "id": 0,
+        "name": "Demo project",
+        "boardType": "ESP32 Dev Board",
+        "vendor": "New Device",
+        "connectionType": "WI_FI",
+        "isUserIcon": false
+    }],
+    "theme": "Blynk",
+    "keepScreenOn": false,
+    "isAppConnectedOn": false,
+    "isNotificationsOff": false,
+    "isShared": false,
+    "isActive": false,
+    "widgetBackgroundOn": false,
+    "color": 0,
+    "isDefaultColor": true
+}
