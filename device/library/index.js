@@ -6,7 +6,7 @@ var deviceInfo;
 var lastToken = ''
 var loggedOut = false
 
-socket = socket('http://103.50.151.90:3000')
+socket = socket('http://iotine.zapto.org')
 
 socket.on('disconnect', (s) => {
     //console.clear() 
