@@ -13,7 +13,10 @@ const initializePassport = require('../configs/passport-config')
 
 initializePassport(passport)
 
+
 router.get('/', (req, res) => res.render('./landing/index.ejs'))
+
+router.get('/login', checkNotAuthenticated, (req, res) => res.render('./accounts/login.ejs'))
 
 router.get('/login', checkNotAuthenticated, (req, res) => res.render('./accounts/login.ejs'))
 
