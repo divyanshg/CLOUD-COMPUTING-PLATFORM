@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../headers.ejs') %>
+    <style type="text/css" media="screen">
+        #devices-template {
+            position: relative;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-200">
+    <a class="skip-link" href="#maincontent">Skip to main</a>
+    <div>
+        <nav class="bg-gray-800 fixed w-full top-0 inset-x-0">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-on-dark.svg"
+                                alt="Workflow logo">
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Monitor</a>
+
+                                <a href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Activity</a>
+
+                                <a href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Onboard</a>
+
+                                <a href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Manage</a>
+
+                                <a href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Secure</a>
+
+                                <a href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Defend</a>
+
+                                <a href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Act</a>
+
+                                <a href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Test</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <button
+                                class="p-1 border-2 border-transparent text-gray-400 rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700"
+                                aria-label="Notifications">
+                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                            </button>
+
+                            <!-- Profile dropdown -->
+                            <div class="ml-3 relative">
+                                <div>
+                                    <button
+                                        class="max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none focus:shadow-solid"
+                                        id="user-menu" aria-label="User menu" aria-haspopup="true">
+                                        <img class="h-8 w-8 rounded-full"
+                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            alt="">
+                                    </button>
+                                </div>
+                                <!--
+                Profile dropdown panel, show/hide based on dropdown state.
+
+                Entering: "transition ease-out duration-100"
+                  From: "transform opacity-0 scale-95"
+                  To: "transform opacity-100 scale-100"
+                Leaving: "transition ease-in duration-75"
+                  From: "transform opacity-100 scale-100"
+                  To: "transform opacity-0 scale-95"
+              -->
+                                <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg hidden">
+                                    <div class="py-1 rounded-md bg-white shadow-xs" role="menu"
+                                        aria-orientation="vertical" aria-labelledby="user-menu">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            role="menuitem">Your Profile</a>
+
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            role="menuitem">Settings</a>
+
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            role="menuitem">Sign out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="-mr-2 flex md:hidden">
+                        <!-- Mobile menu button -->
+                        <button
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white">
+                            <!-- Menu open: "hidden", Menu closed: "block" -->
+                            <svg class="block h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <!-- Menu open: "block", Menu closed: "hidden" -->
+                            <svg class="hidden h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!--
+      Mobile menu, toggle classes based on menu state.
+
+      Open: "block", closed: "hidden"
+    -->
+            <div class="hidden md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Dashboard</a>
+
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Team</a>
+
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Projects</a>
+
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Calendar</a>
+
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Reports</a>
+                </div>
+                <div class="pt-4 pb-3 border-t border-gray-700">
+                    <div class="flex items-center px-5 space-x-3">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full"
+                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt="">
+                        </div>
+                        <div class="space-y-1">
+                            <div class="text-base font-medium leading-none text-white">Tom Cook</div>
+                            <div class="text-sm font-medium leading-none text-gray-400">tom@example.com</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 px-2 space-y-1">
+                        <a href="#"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Your
+                            Profile</a>
+
+                        <a href="#"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Settings</a>
+
+                        <a href="#"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Sign
+                            out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="bg-white shadow mt-16">
+            <div class="flex max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl w-full font-semibold leading-tight text-gray-900">
+                    Bulk registrations
+                </h1>
+            </div>
+        </header>
+        <main>
+            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <!-- Replace with your content -->
+                <div class="bg-white shadow overflow-hidden sm:rounded-lg w-1/2 mx-2 overflow-y-auto"
+                    style="height:700px;">
+                    <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            Create a template for your devices
+                        </h3>
+                        <p class="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
+                            A template defines the IoT devices to be created using a JSON format.
+                        </p>
+                        <p class="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
+                            Follow these steps to build your template. You can edit the template JSON later.
+                        </p>
+                    </div>
+                    <div>
+                        <dl>
+                            <div class="bg-gray-50 px-4 py-5 border-b border-gray-200">
+                                <label class="block text-gray-700 text-sm font-bold mb-3" for="template_name">
+                                    Template name
+                                </label>
+                                <input
+                                    class="shadow appearance-none border rounded w-1/2 py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline deviceName"
+                                    id="template_name" type="text" placeholder="My template name">
+
+                                <label class="block text-gray-700 text-sm font-bold mb-3" for="desc">
+                                    Description (optional)
+                                </label>
+                                <input
+                                    class="shadow appearance-none border rounded w-1/2 py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline deviceName"
+                                    id="desc" type="text" placeholder="Describe your template">
+
+                                <label class="block text-gray-700 text-sm font-bold mb-1 flex" for="cloud_function">
+                                    <span class=" w-full">Cloud function</span>
+                                    <span class="text-blue-500 w-1/4">Create new Cloud function</span>
+                                </label>
+                                <p class="mb-1 -mt-1 max-w-2xl text-sm leading-5 text-gray-500 font-normal">
+                                    Run a Cloud function to validate device parameters before provisioning.
+                                </p>
+                                <select
+                                    class="shadow appearance-none border rounded w-full py-3 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline deviceName"
+                                    id="cloud_function">
+                                    <option value="">No cloud function selected</option>
+                                </select>
+                            </div>
+                            <div class="bg-white px-4 py-5 border-b border-gray-200">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                                    Optional settings
+                                </label>
+                                <br>
+                            </div>
+                            <div class="p-4 -mt-12">
+                                <div id="devices-template" class=" w-full h-24">{
+    "feeds": [{}]
+}
+                                </div>
+                            </div>
+                            <div class="bg-white px-4 py-5 border-t border-gray-200 flex mt-4">
+                                <div class="w-full"></div>
+                                <button
+                                    class="border border-gray-400 rounded-lg text-black px-4 py-2 mr-2">Cancel</button>
+                                <button class="bg-blue-400 rounded-lg text-white px-4 py-2" onclick="addToQueue()">Next</button>
+                            </div>
+                    </div>
+                    </dl>
+                </div>
+            </div>
+            <!-- /End replace -->
+    </div>
+    </main>
+    </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
+    integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="
+    crossorigin="anonymous"></script>
+<script>
+    var editor = ace.edit("devices-template");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/json");
+    console.log()
+
+    const addToURL = "http://localhost:3000/create/bulk-provisions"
+
+    async function addToQueue() {
+        let document = {
+            "name": $("#template_name").val(),
+            "description": $("#desc").val(),
+            "feeds": JSON.parse(editor.getValue()).feeds
+        }
+
+        let response = await fetch(addToURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                document
+            })
+        })
+
+        if(response.status == 200){
+            alert("Queued successfully")
+            setTimeout(() => {
+                window.location.replace('http://localhost:3000/activity')
+            }, 3000)
+        }
+        let result = await response.json()
+    }
+</script>
+
+</html>

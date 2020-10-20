@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./headers.ejs') %>
+</head>
+
+<body class="theme-bg">
+    <a class="skip-link" href="#maincontent">Skip to main</a>
+    <div class="w-16 px-2 h-full bg-black fixed left-0 top-0 theme-dark-bg">
+        <div class="project-icon h-12 w-12 rounded-full my-3 bg-indigo-500"></div>
+        <hr class="border-gray-700 w-8 mx-auto">
+        <div class="project-icon h-12 w-12 rounded-full my-3 bg-red-500"></div>
+        <div class="project-icon h-12 w-12 rounded-full my-3 bg-gradient-to-r from-orange-400 via-red-500 to-pink-500">
+        </div>
+        <div class="project-icon h-12 w-12 rounded-full my-3 bg-orange-500"></div>
+    </div>
+    <div class="left-nav  fixed theme-dark-bg p-4">
+        <div class="head rounded px-2 w-full h-6 py-1">
+            <span class="text-white font-semibold text-lg">Dashboards</span>
+        </div>
+        <ul class="deviceContainer h-full w-full m-0 p-0 mt-8">
+            <li class="theme-bg items-center w-full h-12 flex rounded px-2 pt-1 hover:bg-gray-600 cursor-pointer">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 20L11 4M13 20L17 4M6 9H20M4 15H18" stroke="#4A5568" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="text-white font-semibold py-2 px-2 -mt-1">Temperatures</span>
+            </li>
+        </ul>
+    </div>
+    <div class="right-nav animate__animated animate__slideInRight h-full fixed theme-dark-bg p-4">
+        <div class="head h-auto w-full mb-3">
+            <span class="text-white text-sm font-semibold">ACTIVE NOW</span>
+            <ul class="onlineDevicesContainer h-full w-full m-0 p-0 mt-3">
+                <% if(devices) { %>
+                <% devices.forEach(device => { %>
+                <% if(!device.status) return %>
+                <li
+                    class="active_device_<%= device.id %> animate__animated animate__faster w-full h-12 flex rounded px-2 pt-1 hover:bg-gray-600 cursor-pointer">
+                    <img src="deviceIcon/<%= device.icon %>" type="image/jpeg" alt=""
+                        class="h-10 w-10 rounded-full bg-black">
+                    <span class="text-white font-semibold py-2 px-2 w-full"><%= device.name %></span>
+                    <span title="Message Recieved"
+                        class="r_indicator_<%= device.id %> bg-red-500 rounded-full h-2 w-2 float-right mt-4"
+                        style="display: none;"></span>
+                    <span title="Message Sent"
+                        class="s_indicator_<%= device.id %> bg-green-500 rounded-full h-2 w-2 float-right mt-4"
+                        style="display: none;"></span>
+                </li>
+                <% })} %>
+            </ul>
+        </div>
+        <div class="head h-auto w-full">
+            <span class="text-white text-sm font-semibold">ALL DEVICES</span>
+            <ul class="allDevicesContainer h-full w-full m-0 p-0 mt-3">
+                <% if(devices) { %>
+                <% devices.forEach(device => { %>
+                <li
+                    class="device_<%= device.id %> animate__animated animate__faster w-full h-12 flex rounded px-2 pt-1 hover:bg-gray-600 cursor-pointer">
+                    <img src="deviceIcon/<%= device.icon %>" type="image/jpeg" alt=""
+                        class="h-10 w-10 rounded-full bg-black">
+                    <span class="text-white font-semibold py-2 px-2"><%= device.name %></span>
+                </li>
+                <% })} %>
+            </ul>
+        </div>
+    </div>
+    <div class="main">
+        <div class="topnav h-12 theme-bg fixed">
+            <div class="leftPart border-b-2 theme-dark-bg h-full absolute left-0 py-3 px-4">
+                <span class="text-white font-semibold text-lg"><%= project.name %></span>
+            </div>
+            <div class="centerPart border-b-2 theme-bg absolute h-full flex">
+                <div class="head flex rounded px-4 w-24 h-12 py-3">
+                    <span class="text-white font-semibold">Temperatures</span>
+                </div>
+                <span class="ml-6 pt-3 text-gray-700">|</span>
+                <span class="pt-3 ml-2 cursor-pointer text-gray-700 hover:text-white" onclick="showLiveData()">Live Data</span>
+            </div>
+        </div>
+        <div class="container  h-full px-5 py-24 mx-auto">
+            <div class="flex h-full flex-wrap px-4 -m-4 mainCont">
+                <div class="row widgetrow w-full h-32 border-2 border-dashed mb-3 p-3 addRow items-center text-center align-middle"
+                    style="display: none;">
+                    <svg width="56" height="56" class="m-auto" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12M12 12V18M12 12H18M12 12L6 12" stroke="#374151" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span class="text-xl text-gray-700 m-auto">Add Row</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main liveData hidden overflow-auto">
+        <div class="topnav h-12 theme-bg fixed">
+            <div class="leftPart border-b-2 theme-dark-bg h-full absolute left-0 py-3 px-4">
+                <span class="text-white font-semibold text-lg"><%= project.name %></span>
+            </div>
+            <div class="centerPart border-b-2 theme-bg absolute h-full flex">
+                <div class="head flex rounded px-4 w-auto h-12 py-3">
+                    <span class="text-white font-semibold flex">Live Data</span>
+                </div>
+                <span class="pt-3 text-gray-700">|</span>
+                <span class="pt-3 ml-2 cursor-pointer text-gray-700 hover:text-white" onclick="hideLiveData()">Dashboard</span>
+            </div>
+        </div>
+        <div class="container livedataContainer h-full px-5 py-24 mx-auto">
+        </div>
+    </div>
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    var socket;
+    var showLiveBlocks = false;
+    $(function () {
+        socket = io();
+        socket.emit('login_dash', '<%= owner %>')
+
+        socket.on('published', async details => {
+            await showSentIndicator(details.author.id)
+            await showRecievedIndicator(details.device.id)
+            if(showLiveBlocks){
+                await makeDataBlock(details)
+            }
+            $(`._feed_${details.feed.id}`).html(details.content)
+        })
+
+        socket.on('device_online', device => {
+            if (document.querySelector(`.active_device_${device.id}`) == 'undefined' || document.querySelector(`.active_device_${device.id}`) == null) {
+                addDev(device)
+            } else {
+                $(`#${device.id}_status`).html(checkStatus(device.status))
+            }
+        })
+
+        socket.on('device_disconnected', device => {
+            $(`.active_device_${device.id}`).removeClass('animate__slideInRight').addClass(
+                'animate__slideOutRight')
+            $(`.active_device_${device.id}`).delay(800).hide('fast', function () {
+                $(`.active_device_${device.id}`).remove();
+            })
+        })
+
+    });
+
+    const showRecievedIndicator = (id) => {
+            $(`.r_indicator_${id}`).hide().show()
+            setTimeout(function () {
+                $(`.r_indicator_${id}`).hide()
+            }, 350);
+        },
+        showSentIndicator = (id) => {
+            $(`.s_indicator_${id}`).hide().show()
+            setTimeout(function () {
+                $(`.s_indicator_${id}`).hide()
+            }, 350);
+        }
+
+
+    function addDev(device) {
+        var devTemplate = `<li class="active_device_${device.id} animate__animated animate__slideInRight animate__faster w-full mb-2 h-12 flex rounded px-2 pt-1 hover:bg-gray-600 cursor-pointer">
+                    <img src="deviceIcon/${device.icon}" alt="" type="image/jpeg" class="h-10 w-10 rounded-full bg-black">
+                    <span class="text-white font-semibold py-2 px-2 w-full">${device.name}</span>
+                    <span title="Message Recieved"
+                        class="r_indicator_${device.id} bg-red-500 rounded-full h-2 w-2 float-right mt-4"
+                        style="display: none;"></span>
+                    <span title="Message Sent"
+                        class="s_indicator_${device.id} bg-green-500 rounded-full h-2 w-2 float-right mt-4"
+                        style="display: none;"></span>
+                </li>`
+        $(".onlineDevicesContainer").append(devTemplate)
+    }
+
+    function checkStatus(status) {
+        console.log(status)
+        if (status) {
+            return "ONLINE"
+        } else if (!status) {
+            return "OFFLINE"
+        }
+    }
+</script>
+<script>
+    var genrateId = function () {
+        return '_' + Math.random().toString(36).substr(2, 9);
+    };
+    $(document).ready(async () => {
+        const rows = <%-JSON.stringify(project.rows) %>
+        const widgets = <%-JSON.stringify(project.widgets) %>
+        var positionSortedWidgets = Array(widgets.length)
+
+        await rows.forEach(createRow)
+        await widgets.forEach(widget => {
+            positionSortedWidgets[widget.pos] = widget
+        })
+
+        await createWidgets()
+        delete widgets
+        delete rows
+
+        const draggables = document.querySelectorAll('.widget')
+        var widgetRows = document.querySelectorAll('.widgetrow')
+
+        draggables.forEach(draggable => {
+
+            draggable.addEventListener('dragstart', () => {
+                widgetRows.forEach(row => {
+                    $(row).addClass("border-2 border-dashed border-gray-700")
+                })
+                $(".addRow").show("fast")
+                $(draggable).addClass(
+                    'opacity-50 draggingWidget border-2 border-dashed ')
+            })
+
+            draggable.addEventListener('dragend', () => {
+                widgetRows.forEach(row => {
+                    $(row).removeClass("border-2 border-dashed").removeClass(
+                        'border-gray-700')
+                    $(row).removeClass('border-gray-300').removeClass(
+                        'border-red-800')
+                })
+                $(".addRow").hide("fast")
+                $(draggable).removeClass(
+                    'opacity-50 draggingWidget border-2 border-dashed ')
+            })
+
+        })
+
+        function makeRowsDroppable() {
+            widgetRows = document.querySelectorAll('.widgetrow')
+            widgetRows.forEach(row => {
+                row.addEventListener('dragover', e => {
+                    if (row.childElementCount >= 4) {
+                        //adjustWidgets()
+                        return
+                    } else {
+                        e.preventDefault()
+                        $(row).removeClass('border-gray-700').addClass('border-gray-300')
+                        //adjustWidgets(row)
+                        onDragOver(row, e)
+                    }
+                })
+                row.addEventListener('dragleave', e => {
+                    e.preventDefault()
+                    $(row).removeClass('border-gray-300').addClass("border-gray-700")
+                    //adjustWidgets()
+                })
+
+                row.addEventListener('drop', () => {
+                    //updateLayout()
+                    removeEmptyRows()
+                })
+            })
+        }
+
+        function adjustWidgets() {
+            widgetRows.forEach(row => {
+                if (row.childElementCount == 3) {
+                    row.childNodes.forEach(widget => {
+                        if ($(widget).hasClass("customWidth")) return
+                        $(widget).removeClass("w-1/4").removeClass('w-full').removeClass(
+                            'w-1/2').addClass(
+                            'w-1/3')
+                    })
+                } else if (row.childElementCount == 2) {
+                    row.childNodes.forEach(widget => {
+                        if ($(widget).hasClass("customWidth")) return
+                        $(widget).removeClass('w-1/4').removeClass('w-1/3').removeClass(
+                            'w-full').addClass(
+                            'w-1/2')
+                    })
+                } else if (row.childElementCount == 4) {
+                    row.childNodes.forEach(widget => {
+                        if ($(widget).hasClass("customWidth")) return
+                        $(widget).removeClass('w-1/3').removeClass('w-full').removeClass(
+                            'w-1/2').addClass(
+                            'w-1/4')
+                    })
+                } else if (row.childElementCount == 1) {
+                    row.childNodes.forEach(widget => {
+                        if ($(widget).hasClass("customWidth")) return
+                        $(widget).removeClass('w-1/2').addClass('w-full')
+                    })
+                } else if (row.childElementCount == 0) {
+                    if ($(row).hasClass('addRow')) return
+                }
+            })
+        }
+
+        function onDragOver(row, e) {
+            const afterElement = getDragAfterElement(row, e.clientX)
+            const draggable = document.querySelector('.draggingWidget')
+
+            if ($(row).hasClass('addRow')) {
+                var rowId = genrateId()
+                var newRow = `<div id="${rowId}" class="row widgetrow flex w-full h-48 mb-3 p-3"></div>`
+
+                $(newRow).insertBefore(row)
+                $(`#${rowId}`).append(draggable)
+
+                $(`#${rowId}`).on('dragover', e => {
+                    e.preventDefault()
+                    $(`#${rowId}`).addClass('border-2 border-dashed border-gray-300')
+                    if (afterElement == null) {
+                        $(`#${rowId}`).append(draggable)
+                    } else {
+                        document.querySelector(`#${rowId}`).insertBefore(draggable,
+                            afterElement)
+                    }
+                })
+
+                $(`#${rowId}`).on('dragleave', e => {
+                    $(`#${rowId}`).removeClass('border-gray-300').addClass("border-gray-700")
+                })
+
+                makeRowsDroppable()
+                return
+            } else {
+                if (afterElement == null) {
+                    row.appendChild(draggable)
+                } else {
+                    row.insertBefore(draggable, afterElement)
+                }
+            }
+        }
+
+        function getDragAfterElement(row, x) {
+            const draggableElements = [...row.querySelectorAll('.widget:not(.draggingWidget)')]
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect()
+                const offset = x - box.left - box.width / 2
+                if (offset < 0 && offset > closest.offset) {
+                    return {
+                        offset,
+                        element: child
+                    }
+                } else {
+                    return closest
+                }
+            }, {
+                offset: Number.NEGATIVE_INFINITY
+            }).element
+        }
+
+        makeRowsDroppable()
+
+        function removeEmptyRows() {
+            widgetRows.forEach(row => {
+                if (row.childElementCount === 0) {
+                    $(`#titleFor_${row.id}`).remove()
+                    $(row).remove()
+                }
+            })
+        }
+
+        function createRow(row) {
+            var template = `<span id="titleFor_${row.id}" class="text-gray-500 text-lg mb-2">${row.name}</span><br>
+                            <div id="${row.id}" class="row widgetrow flex w-full h-48 mb-3 p-3"></div>`
+            $(template).insertBefore(".addRow")
+        }
+
+        function createWidgets() {
+
+            positionSortedWidgets.forEach(widget => {
+                if (widget.type === "BUTTON") {
+                    var template =
+                        `<div class="widget mx-3 w-${widget.width} customWidth h-full px-4 py-2 rounded-lg" draggable="true" style="background-color: ${widget.BackGround};color: ${widget.color} !important;">
+                                    <span class="text-lg">${widget.label}</span>
+                                    <br>
+                                    <button id="widget_${widget.id}" class="widgetButton w-full mt-4 mb-2">
+                                        <span class="_feed_${widget.feed}" href="#">${widget.currentState}</span>
+                                    </button>
+                        </div>`
+
+                        $(`#${widget.inRow}`).append(template)
+                        $(`#widget_${widget.id}`).data('options', { type: 'ONOFF', device:widget.deviceId, feed: widget.feed})
+                        $(`#widget_${widget.id}`).data('currentData', widget.currentState)
+                        makeButtonsClickable()
+                }
+            })
+        }
+    })
+</script>
+<script>
+    var lastDataBlock = null;
+
+    function showLiveData() {
+        $(".main").hide()
+        $('.liveData').show()
+        $('.livedataContainer').html('')
+        showLiveBlocks = true
+    }
+
+    function hideLiveData(){
+       $(".main").show()
+       $('.liveData').hide()
+       showLiveBlocks = false
+    }
+
+    async function makeDataBlock(data) {
+        var id = `_block_${genrateId()}`
+        var block = `<div id='${id}' class="dataBlock w-full h-auto theme-dark-bg rounded-lg mt-4 animate__animated animate__slideInDown animate__faster" style="min-height: 16rem;border:3px solid #36393f;">
+                <div class="w-full h-16 p-4 flex">
+                    <span class="text-white text-xl">${data.author.name}</span>
+                    &nbsp;
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mt-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 5L21 12M21 12L14 19M21 12L3 12" stroke="#4A5568" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    &nbsp;
+                    <span class="text-white text-xl">${data.device.name} : ${data.content}</span>
+                    &nbsp;&nbsp;
+                    <span class="text-gray-700 float-right text-sm mt-1">${data.createdTimestamp}</span>
+                </div>
+                <div class="dataContainer py-4 flex w-full h-full">
+                    <div class="w-1/3 theme-bg text-white mx-4 rounded-lg h-56">${JSON.stringify(data.feed)}</div>
+                    <div class="w-1/3 theme-bg text-white mx-4 rounded-lg h-56">${JSON.stringify(data.device)}</div>
+                    <div class="w-1/3 theme-bg text-white mx-4 rounded-lg h-56">${JSON.stringify(data.author)}</div>
+                </div>
+            </div>`
+
+        if (lastDataBlock !== null) {
+            await $(block).insertBefore(lastDataBlock)
+        } else {
+            await $('.livedataContainer').append(block)
+        }
+        lastDataBlock = `#${id}`
+    }
+</script>
+<script>
+    function makeButtonsClickable(){
+        document.querySelectorAll('.widgetButton').forEach(giveButtonsAbility)
+    }
+    function giveButtonsAbility(button){
+        if($(button).data('options').type === "ONOFF"){
+            button.addEventListener('click', () => publish_ONOFF(button, $(button).data('options')), false)
+        }
+    }
+</script>
+<script>
+    async function publish_ONOFF(button, options){
+        var currentDataOfButton = $(button).data('currentData')
+        var content;
+
+        if(currentDataOfButton == "ON"){
+            content = "OFF"
+            $(button).data('currentData', content).html(`<span class="_feed_${options.feed}" href="#">${content}</span>`)
+        }else{
+            content = "ON"
+            $(button).data('currentData', content).html(`<span class="_feed_${options.feed}" href="#">${content}</span>`)
+        }
+
+        await socket.emit('dash_publish', { dashboardId: '<%= dashboardId %>' ,deviceID: options.device, feed: options.feed, content, authorId: '<%= owner %>', timeStamp: Date.now() })
+    }
+</script>
+</html>

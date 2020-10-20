@@ -2,9 +2,20 @@ const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
 const userFromDB = require('../models/getUser')
 
+const {
+    saveLogin,
+    saveAccessToken
+} = require("../models/saveLoginActivity")
+const {
+    getLocation
+} = require("../models/getUserLocation")
+const {
+    uuid
+} = require('uuidv4');
+
 function initialize(passport) {
 
-    const authenticateUser = async (email, password, next) => {
+    const authenticateUser = async (req, email, password, next) => {
         const user = userFromDB.getByEmail( email )
 
         if(user == null){
@@ -14,11 +25,10 @@ function initialize(passport) {
         try{
 
             if(await bcrypt.compare(password, user.pass)){
-
+                saveLogin({user: user.uuid, req})
                 return next(null, user, )
 
             }else{
-
                 return next(null, false, { message: 'Password Incorrect' })
             
             }
@@ -32,7 +42,8 @@ function initialize(passport) {
 
     passport.use(new LocalStrategy({
         usernameField: 'email',
-        passwordField: 'pass'
+        passwordField: 'pass',
+        passReqToCallback: true
     }, authenticateUser))
 
     passport.serializeUser((user, next) => next(null, user.id))
