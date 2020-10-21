@@ -104,7 +104,7 @@ io.on('connection', (socket) => {
 
                 device.ip = socket.handshake.address.replace('::ffff:', '')
                 device.status = true
-                
+
                 delete device.signature;
 
                 io.to(device.id).emit(`login-status-${token}`, {
@@ -160,6 +160,8 @@ io.on('connection', (socket) => {
         if (feed.contentTypeMatches) {
             await updateLastData(data.feed, data.content, device.ownerID)
 
+            delete device.signature;
+
             const formattedData = {
                 feed,
                 device,
@@ -173,6 +175,7 @@ io.on('connection', (socket) => {
                 },
                 createdTimestamp: data.timeStamp
             }
+            
 
             io.to(data.deviceID).emit(feed.name, formattedData)
             io.to(data.deviceID).emit(feed.id, formattedData)
@@ -213,6 +216,8 @@ io.on('connection', (socket) => {
 
         feed.contentTypeMatches = (feed.dataType == typeof data.content)
 
+        delete device.signature;
+
         if (feed.contentTypeMatches) {
             publishData(data, feed, device, author, owner, socket)
         } else {
@@ -230,6 +235,9 @@ io.on('connection', (socket) => {
         var device = await updateDeviceStatus(socket.id, '', socket.handshake, false)
         try {
             if (device == null) return
+
+            delete device.signature;
+
             io.to(`dashboard_${device.ownerID}_iot`).emit('device_disconnected', device)
             delete io.sockets.adapter.rooms[socket.id];
         } catch (e) {
@@ -260,6 +268,9 @@ async function clearCaches(deviceId, socket) {
                     dashboardInfo: await getDashboardInfo(data.dashboardId)
                 }
                 owner = owner_
+
+                delete device.signature;
+
                 publishData(data, feed, device, author, owner, socket)
 
             } else if (owner != device.ownerID) {
@@ -269,6 +280,9 @@ async function clearCaches(deviceId, socket) {
                     author,
                     owner
                 } = await getAuthorInfo(data.authorId)
+
+                delete device.signature;
+
                 publishData(data, feed, device, author, owner, socket)
             }
         })
