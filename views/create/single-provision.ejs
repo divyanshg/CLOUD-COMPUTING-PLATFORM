@@ -222,10 +222,15 @@
                                 </label>
                                 <div class="relative flex w-full mb-3">
                                     <select
-                                        class="block appearance-none w-1/2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 deviceType"
+                                        class="dts-list block appearance-none w-1/2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 deviceType"
                                         id="grid-state">
                                         <option>No type selected</option>
-                                        <option>to be listed auto</option>
+                                        <% if(deviceTypes == '') { %>
+                                        <option>No device type found</option>
+                                        <% }else { %>
+                                        <% deviceTypes.forEach(type => { %>
+                                        <option value="<%= type.resource %>"><%= type.name %></option>
+                                        <% })} %>
                                     </select>
                                     <button class="newDeviceType border border-blue-300 rounded text-blue-300 p-2 mx-3
                                         hover:bg-blue-300 hover:text-white">Create
@@ -250,7 +255,7 @@
                                         class="block appearance-none w-1/2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 deviceGroup"
                                         id="grid-state">
                                         <option>No type selected</option>
-                                        <option>to be listed auto</option>
+                                        <option>auto</option>
                                     </select>
                                     <button
                                         class="border border-blue-300 rounded text-blue-300 p-2 mx-3 hover:bg-blue-300 hover:text-white">Create
@@ -364,7 +369,7 @@
                                         </label>
                                         <input
                                             class="shadow appearance-none border rounded w-3/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            id="username" type="text" placeholder="Give your device type a name">
+                                            id="deviceType" type="text" placeholder="Give your device type a name">
                                     </div>
                                 </dl>
                             </div>
@@ -374,7 +379,7 @@
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <span class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
                         <button type="button"
-                            class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                            class="cdt-btn inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                             Create
                         </button>
                     </span>
@@ -464,6 +469,29 @@
                 .then(data => console.log(data))
         })
     }
+
+    $(".cdt-btn").on('click', async () => {
+        var deviceTypeName = $("#deviceType").val()
+
+        await fetch('/create/device-type', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: deviceTypeName
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                $(".newdeviceTypeModal").hide()
+
+                $(".dts-list").append(`<option value='${data.resource}'>${deviceTypeName}</option>`)
+
+            })
+
+    })
 </script>
 
 </html>
