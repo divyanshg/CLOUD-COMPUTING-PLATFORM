@@ -1,5 +1,6 @@
 var dataCamp = require('../models/database')
 var decodeToken = require('jwt-decode');
+const jwt = require('njwt')
 
 const {
     encrypt,
@@ -14,16 +15,14 @@ dataCamp.connect()
 module.exports = {
     authorizeDevice: (token) => {
         return new Promise(async (resolve, reject) => {
-            var { deviceID, ownerID } = ''
-            try {
-                deviceID = decodeToken(token).deviceID
-                ownerID = decodeToken(token).ownerID
-            } catch (e) {
-                return reject({
-                    code: 404,
-                    error: "Invalid Token"
-                })
-            }
+            var {
+                deviceID,
+                ownerID,
+                projectID
+            } = ''
+            deviceID = decodeToken(token).deviceID
+            ownerID = decodeToken(token).ownerID
+            projectID = decodeToken(token).projectID
 
             await dataCamp.findOne({
                 id: deviceID,
@@ -34,11 +33,23 @@ module.exports = {
                 }
             }, (err, device) => {
                 if (err) return err
-                if (device == null) reject({
-                    code: 404,
-                    error: "Invalid Token"
-                })
-                resolve(device)
+                if (device == null) {
+                    reject({
+                        code: 404,
+                        error: "Invalid Token"
+                    })
+                } else {
+                    jwt.verify(token, device.signature, (err, verifiedJwt) => {
+                        if (err) {
+                            return reject({
+                                code: 404,
+                                error: err.message
+                            })
+                        } else {
+                            resolve(device)
+                        }
+                    })
+                }
             })
         })
     }

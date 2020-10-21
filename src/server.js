@@ -104,6 +104,9 @@ io.on('connection', (socket) => {
 
                 device.ip = socket.handshake.address.replace('::ffff:', '')
                 device.status = true
+                
+                delete device.signature;
+
                 io.to(device.id).emit(`login-status-${token}`, {
                     code: 200,
                     error: null,
