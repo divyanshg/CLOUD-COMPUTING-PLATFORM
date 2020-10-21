@@ -52,10 +52,6 @@ const {
 const {
     checkAuthenticated
 } = require('../authorizers/users');
-const {
-    delete,
-    delete
-} = require('../routes');
 
 //View Engine
 
@@ -113,6 +109,7 @@ io.on('connection', (socket) => {
                 device.status = true
 
                 delete device.signature;
+                delete device.policies;
 
                 io.to(device.id).emit(`login-status-${token}`, {
                     code: 200,
