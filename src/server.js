@@ -52,6 +52,10 @@ const {
 const {
     checkAuthenticated
 } = require('../authorizers/users');
+const {
+    delete,
+    delete
+} = require('../routes');
 
 //View Engine
 
@@ -164,6 +168,7 @@ io.on('connection', (socket) => {
             await updateLastData(data.feed, data.content, device.ownerID)
 
             delete device.signature;
+            delete device.policies;
 
             const formattedData = {
                 feed,
@@ -220,6 +225,7 @@ io.on('connection', (socket) => {
                 feed.contentTypeMatches = (feed.dataType == typeof data.content)
 
                 delete device.signature;
+                delete device.policies;
 
                 if (feed.contentTypeMatches) {
                     publishData(data, feed, device, author, owner, socket)
@@ -245,6 +251,7 @@ io.on('connection', (socket) => {
             if (device == null) return
 
             delete device.signature;
+            delete device.policies;
 
             io.to(`dashboard_${device.ownerID}_iot`).emit('device_disconnected', device)
             delete io.sockets.adapter.rooms[socket.id];
@@ -279,6 +286,7 @@ async function clearCaches(deviceId, socket) {
                 owner = owner_
 
                 delete device.signature;
+                delete device.policies;
 
                 publishData(data, feed, device, author, owner, socket)
 
@@ -291,6 +299,7 @@ async function clearCaches(deviceId, socket) {
                 } = await getAuthorInfo(data.authorId)
 
                 delete device.signature;
+                delete device.policies;
 
                 publishData(data, feed, device, author, owner, socket)
             }
@@ -312,6 +321,9 @@ async function publishData(data, feed, device, author, owner, socket) {
         author,
         createdTimestamp: data.timeStamp
     }
+
+    delete device.signature;
+    delete device.policies;
 
     io.to(data.deviceID).emit(feed.name, formattedData)
     io.to(data.deviceID).emit(feed.id, formattedData)
