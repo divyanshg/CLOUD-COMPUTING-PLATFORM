@@ -25,7 +25,8 @@ const {
 } = require('uuid')
 
 const {
-    authorizeDevice
+    authorizeDevice,
+    checkPolicies
 } = require('../authorizers/deviceAuth')
 
 const {
@@ -48,7 +49,9 @@ const {
     checkCache,
     saveCache
 } = require('./cache_collector');
-const { checkAuthenticated } = require('../authorizers/users');
+const {
+    checkAuthenticated
+} = require('../authorizers/users');
 
 //View Engine
 
@@ -175,7 +178,7 @@ io.on('connection', (socket) => {
                 },
                 createdTimestamp: data.timeStamp
             }
-            
+
 
             io.to(data.deviceID).emit(feed.name, formattedData)
             io.to(data.deviceID).emit(feed.id, formattedData)
@@ -197,37 +200,42 @@ io.on('connection', (socket) => {
 
     socket.on('publish', async data => {
 
-        if (typeof io.sockets.adapter.rooms[data.authorId] == 'undefined') return
-        if (!io.sockets.adapter.rooms[data.authorId].sockets[socket.id]) return
+        await checkPolicies(data.authorId, data.deviceID, "Publish", data.feed).then(async d => {
+                if (typeof io.sockets.adapter.rooms[data.authorId] == 'undefined') return
+                if (!io.sockets.adapter.rooms[data.authorId].sockets[socket.id]) return
 
-        if (typeof io.sockets.adapter.rooms[data.deviceID] == 'undefined') {
-            console.log("device is offline")
-            saveCache(data)
-            return
-        }
-        const feed = await getFeedInfo(data.feed),
-            device = await getDeviceinfo(data.deviceID),
-            {
-                author,
-                owner
-            } = await getAuthorInfo(data.authorId, data.isDevice)
+                if (typeof io.sockets.adapter.rooms[data.deviceID] == 'undefined') {
+                    saveCache(data)
+                    return
+                }
+                const feed = await getFeedInfo(data.feed),
+                    device = await getDeviceinfo(data.deviceID),
+                    {
+                        author,
+                        owner
+                    } = await getAuthorInfo(data.authorId, data.isDevice)
 
-        if (owner != device.ownerID) return
+                if (owner != device.ownerID) return
 
-        feed.contentTypeMatches = (feed.dataType == typeof data.content)
+                feed.contentTypeMatches = (feed.dataType == typeof data.content)
 
-        delete device.signature;
+                delete device.signature;
 
-        if (feed.contentTypeMatches) {
-            publishData(data, feed, device, author, owner, socket)
-        } else {
-            io.to(data.authorId).emit(`invalid_data_type_sent`, {
-                feed: data.feed,
-                acceptedType: feed.dataType,
-                sentType: typeof data.content
+                if (feed.contentTypeMatches) {
+                    publishData(data, feed, device, author, owner, socket)
+                } else {
+                    io.to(data.authorId).emit(`invalid_data_type_sent`, {
+                        feed: data.feed,
+                        acceptedType: feed.dataType,
+                        sentType: typeof data.content
+                    })
+                    return
+                }
             })
-            return
-        }
+            .catch(policy => {
+                io.to(data.authorId).emit('publish_err', "Publish was not allowed by device policies.\nPolicy : " + policy)
+                return
+            })
 
     })
 
@@ -254,7 +262,8 @@ async function clearCaches(deviceId, socket) {
         await cache.forEach(async data => {
             const feed = await getFeedInfo(data.feed),
                 device = await getDeviceinfo(data.deviceID)
-            var author = null, owner = null
+            var author = null,
+                owner = null
 
             if (device.ownerID == data.authorId) {
 
