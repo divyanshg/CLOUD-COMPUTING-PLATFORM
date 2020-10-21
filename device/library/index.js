@@ -21,6 +21,9 @@ socket.on(`invalid_data_type_sent`, details => {
     console.log(chalk.bgRed(`Invalid data type was sent to ${details.feed} \nAccepted Type: ${details.acceptedType} \nSent: ${details.sentType} \nData was not sent to target device! `) + "\n")
 })
 
+socket.on('publish_err', (e) => {
+    console.log(chalk.bgRed(`${e}`)+ "\nData was not published")
+})
 function login(token) {
     return new Promise(async (resolve, reject) => {
         await socket.emit('login', token)
