@@ -14,6 +14,8 @@ const { addToQueue, getActivities } = require('../../models/bulk-register')
 
 const { registerPolicy } = require('../../models/policy.js')
 
+const { getDeviceTypes, createDeviceType } = require('./deviceType')
+
 router.get('/', checkAuthenticated, (req, res) => {
     res.redirect('/dashboard')
 })
@@ -22,9 +24,10 @@ router.get('/provisioning', checkAuthenticated, (req, res) => {
     res.render('create/provisioning.ejs')
 })
 
-router.get('/single-provision', checkAuthenticated, (req, res) => {
+router.get('/single-provision', checkAuthenticated, async (req, res) => {
     res.render("create/single-provision.ejs", {
       ownerID: "898435880938453458935",
+      deviceTypes: await getDeviceTypes(req.user.id, '293522617')
     });
 })
 
@@ -42,5 +45,6 @@ router.get('/policy', checkAuthenticated, (req, res) => {
 
 router.post('/policy', checkAuthenticated, registerPolicy)
 
+router.post('/device-type', checkAuthenticated, createDeviceType)
 
 module.exports = router

@@ -1,6 +1,3 @@
-const {
-    resolveFieldValueOrError
-} = require('graphql/execution/execute');
 var dCamp = require('./database')
 var dataCamp;
 
