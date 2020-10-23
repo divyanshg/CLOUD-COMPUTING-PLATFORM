@@ -5,11 +5,22 @@ const bcrypt = require('bcrypt')
 const passport = require('passport')
 
 const user = require('../models/getUser')
-const { checkAuthenticated, checkNotAuthenticated } = require('../authorizers/users')
+const {
+    checkAuthenticated,
+    checkNotAuthenticated
+} = require('../authorizers/users')
 
-const { renderDashboard, renderActivity } = require('../view-renderers/dashboard')
-const { getProjects } = require('../models/projects')
+const {
+    renderDashboard,
+    renderActivity
+} = require('../view-renderers/dashboard')
+const {
+    getProjects
+} = require('../models/projects')
 const initializePassport = require('../configs/passport-config')
+const {
+    exec
+} = require('child_process');
 
 initializePassport(passport)
 
@@ -69,7 +80,7 @@ router.get('/projects', checkAuthenticated, async (req, res) => {
 })
 
 router.get('/project/:id', checkAuthenticated, async (req, res) => {
-    
+
     console.log(req.user)
     req.user.project = req.params.id
     res.redirect('/dashboard')
@@ -82,11 +93,22 @@ router.get('/dashboard/connIntro', checkAuthenticated, (req, res) => {
 router.get('/activity', checkAuthenticated, renderActivity)
 
 router.get('/deviceIcon/:iconsrc', checkAuthenticated, (req, res) => {
-    res.sendFile(__dirname + '/icons/'+ req.params.iconsrc)
+    res.sendFile(__dirname + '/icons/' + req.params.iconsrc)
 })
 
-router.get('/gitpush', (req, res) => {
-    console.log(res.body)
+router.post('/gitpush', (req, res) => {
+    res.sendStatus(200)
+    exec('git pull', (err, stdout, stderr) => {
+        if (err) {
+            // node couldn't execute the command
+            return;
+        }
+
+        // the *entire* stdout and stderr (buffered)
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
+    });
+
 })
 
 module.exports = router
