@@ -178,7 +178,7 @@
                 <div class="bg-white px-4 flex">
                     <a href="/create/provisioning"
                         class="border border-gray-300 text-black px-4 py-2 rounded mx-1">Cancel</a>
-                    <button class="border bg-blue-400 text-white px-4 py-2 rounded mx-1 addDevice">Next</button>
+                    <button class="svd-btn border bg-blue-400 text-white px-4 py-2 rounded mx-1 addDevice">Next</button>
                 </div>
             </div>
         </header>
@@ -202,7 +202,7 @@
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-1/2 py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline deviceName"
-                                    id="username" type="text" placeholder="Give your device a name">
+                                    id="deviceName" type="text" placeholder="Give your device a name">
                             </div>
                             <div class="bg-white px-4 py-5">
                                 <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -252,7 +252,7 @@
                                 </label>
                                 <div class="relative flex w-full mb-3">
                                     <select
-                                        class="block appearance-none w-1/2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 deviceGroup"
+                                        class="dg-list block appearance-none w-1/2 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 deviceGroup"
                                         id="grid-state">
                                         <option>No type selected</option>
                                         <option>auto</option>
@@ -417,59 +417,6 @@
     feeditor.setTheme("ace/theme/monokai");
     feeditor.session.setMode("ace/mode/json");
 
-    $(".addDevice").on('click', addDevice)
-
-    function addDevice() {
-
-        const deviceName = $('.deviceName').val()
-        const deviceType = $('.deviceType').val()
-        const deviceGroup = $('.deviceGroup').val()
-
-        var query = `mutation {addDevice(name: "${deviceName}", deviceType: "${deviceType}", deviceGroup: "${deviceGroup}", ownerId: "${ownerId}") {
-            id
-        }}`;
-
-        fetch('/internals', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    query,
-                    variables: null
-                })
-            })
-            .then(r => r.json())
-            .then(data => {
-                var deviceId = data.data.addDevice.id
-                addFeeds(deviceId)
-            })
-    }
-
-    function addFeeds(deviceId) {
-        const feeds = JSON.parse(feeditor.getValue())
-        feeds.forEach(feed => {
-            var query = `mutation {addFeed(name: "${feed.name}", dataType: "${feed.dataType}", device: "${deviceId}", ownerID: "${ownerId}") {
-                id
-            }}`;
-
-            fetch('/internals', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        query,
-                        variables: null
-                    })
-                })
-                .then(r => r.json())
-                .then(data => console.log(data))
-        })
-    }
-
     $(".cdt-btn").on('click', async () => {
         var deviceTypeName = $("#deviceType").val()
 
@@ -490,6 +437,29 @@
                 $(".dts-list").append(`<option value='${data.resource}'>${deviceTypeName}</option>`)
 
             })
+
+    })
+
+    $(".svd-btn").on('click', async () => {
+        //Save Device
+        var name = $("#deviceName").val();
+        var type = $(".dts-list").val();
+        var group = $(".dg-list").val();
+        const feeds = JSON.parse(feeditor.getValue())
+
+        await fetch('/create/single-device', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                name,
+                type,
+                group,
+                feeds
+            })
+        })
 
     })
 </script>

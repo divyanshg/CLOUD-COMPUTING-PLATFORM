@@ -10,6 +10,7 @@ const {
     checkNotAuthenticated
 } = require('../../authorizers/users')
 
+const { saveDevice } = require('./single-register')
 const { addToQueue, getActivities } = require('../../models/bulk-register')
 
 const { registerPolicy } = require('../../models/policy.js')
@@ -26,9 +27,21 @@ router.get('/provisioning', checkAuthenticated, (req, res) => {
 
 router.get('/single-provision', checkAuthenticated, async (req, res) => {
     res.render("create/single-provision.ejs", {
-      ownerID: "898435880938453458935",
+      ownerID: req.user.id,
       deviceTypes: await getDeviceTypes(req.user.id, '293522617')
     });
+})
+
+router.post('/single-device', checkAuthenticated, async (req, res) => {
+    delete req.user.pass;
+    await saveDevice({user: req.user, device: req.body})
+    .then(resp => {
+        console.log(resp)
+        res.sendStatus(200)
+    })
+    .catch(e => {
+        res.sendStatus(500)
+    })
 })
 
 router.get('/bulk-provisions', checkAuthenticated, (req, res) => {
