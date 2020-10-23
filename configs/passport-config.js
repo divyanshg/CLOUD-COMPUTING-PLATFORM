@@ -16,7 +16,7 @@ const {
 function initialize(passport) {
 
     const authenticateUser = async (req, email, password, next) => {
-        const user = userFromDB.getByEmail( email )
+        const user = await userFromDB.getByEmail( email )
 
         if(user == null){
             return next(null, false, { message: 'No user registered with that email!!' })
@@ -47,8 +47,8 @@ function initialize(passport) {
     }, authenticateUser))
 
     passport.serializeUser((user, next) => next(null, user.id))
-    passport.deserializeUser((id, next) => {
-        return next(null, userFromDB.getById(id))
+    passport.deserializeUser(async (id, next) => {
+        return next(null, await userFromDB.getById(id))
     })
 }
 

@@ -8,7 +8,7 @@ const user = require('../models/getUser')
 const { checkAuthenticated, checkNotAuthenticated } = require('../authorizers/users')
 
 const { renderDashboard, renderActivity } = require('../view-renderers/dashboard')
-
+const { getProjects } = require('../models/projects')
 const initializePassport = require('../configs/passport-config')
 
 initializePassport(passport)
@@ -21,7 +21,7 @@ router.get('/login', checkNotAuthenticated, (req, res) => res.render('./accounts
 router.get('/login', checkNotAuthenticated, (req, res) => res.render('./accounts/login.ejs'))
 
 router.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/dashboard',
+    successRedirect: '/projects',
     failureRedirect: '/login',
     failureFlash: true
 }))
@@ -62,7 +62,18 @@ router.delete('/logout', checkAuthenticated, (req, res) => {
     res.redirect('/login')
 })
 
+router.get('/projects', checkAuthenticated, async (req, res) => {
+    res.render("projects/index.ejs", {
+        projects: await getProjects(req.user.id)
+    })
+})
 
+router.get('/project/:id', checkAuthenticated, async (req, res) => {
+    
+    console.log(req.user)
+    req.user.project = req.params.id
+    res.redirect('/dashboard')
+})
 
 router.get('/dashboard', checkAuthenticated, renderDashboard)
 router.get('/dashboard/connIntro', checkAuthenticated, (req, res) => {
@@ -72,6 +83,10 @@ router.get('/activity', checkAuthenticated, renderActivity)
 
 router.get('/deviceIcon/:iconsrc', checkAuthenticated, (req, res) => {
     res.sendFile(__dirname + '/icons/'+ req.params.iconsrc)
+})
+
+router.get('/gitpush', (req, res) => {
+    console.log(res.body)
 })
 
 module.exports = router
