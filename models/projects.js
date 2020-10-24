@@ -19,7 +19,6 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             await dataCamp.findOne({ id }, (err, project) => {
                 if(err) reject(err)
-                console.log(id)
                 resolve(project)
             })
         })

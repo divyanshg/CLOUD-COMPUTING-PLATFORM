@@ -76,6 +76,7 @@ app.use('/', require('../routes/index'))
 app.use('/create', require('../routes/create/index'))
 app.use('/policy', require('../routes/policy/index'))
 app.use('/devices', require('../routes/devices'))
+app.use('/api', require('../routes/api/index'))
 
 //GraphQL API
 

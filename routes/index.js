@@ -80,10 +80,10 @@ router.get('/projects', checkAuthenticated, async (req, res) => {
 })
 
 router.get('/project/:id', checkAuthenticated, async (req, res) => {
-
-    console.log(req.user)
     req.user.project = req.params.id
-    res.redirect('/dashboard')
+    res.redirect('/dashboard?project='+req.params.id)
+    //renderDashboard(req, res)
+    //res.render('services/index.ejs', { projectID: req.params.id })
 })
 
 router.get('/dashboard', checkAuthenticated, renderDashboard)
