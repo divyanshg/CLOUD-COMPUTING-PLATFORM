@@ -1,0 +1,34 @@
+<div class="ml-3 relative">
+    <div>
+        <button onclick="$('.projects-drop').toggle()"
+            class="project-selector mr-4 flex uppercase text-sm font-semibold p-3 rounded hover:bg-indigo-400 focus:outline-none"
+            title="Switch project">
+            <%= project.name %>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="ml-2" style="margin-top:2.5px;"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 9L12 16L5 9" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </button>
+    </div>
+    <div class="projects-drop origin-top-right absolute right-0 mt-2 rounded-md shadow-lg hidden" style="width:400px;">
+        <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical"
+            aria-labelledby="user-menu">
+            <span
+                class="w-full text-center font-semibold block px-4 py-2 h-12 text-md text-gray-700 border-b border-gray-200"
+                data-project="" role="menuitem">SWITCH PROJECT</span>
+            <% projects.forEach(project => { %>
+            <% if(project.id == projectID){ %>
+            <button
+                class="current-project w-full text-left block px-4 py-2 h-12 text-sm text-gray-700 bg-blue-100 focus:outline-none"
+                id="<%= project.id %>" role="menuitem"><%= project.name %> <span
+                    class="text-blue-400 text-xs float-right font-semibold">CURRENT PROJECT</span></button>
+            <% } else { %>
+            <button
+                class="project-link w-full text-left block px-4 py-2 h-12 text-sm text-gray-700 hover:bg-gray-200 focus:outline-none"
+                id="<%= project.id %>" role="menuitem"><%= project.name %></button>
+            <% } %>
+            <% }) %>
+        </div>
+    </div>
+</div>

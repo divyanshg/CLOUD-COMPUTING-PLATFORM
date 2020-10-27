@@ -11,6 +11,7 @@ module.exports = {
     addToQueue: (req, res) => {
         const document = req.body.document
         document.ownerID = req.user.id
+        document.projectID = req.params.projectID
         document.status = "PENDING"
         document.createdOn = Date.now()
         dataCamp.collection("bulk-registration-queue").insertOne(document, (err, response) => {
@@ -23,7 +24,8 @@ module.exports = {
         return new Promise((resolve, reject) => {
             const ownerID = req.user.id
             dataCamp.collection('bulk-registration-queue').find({
-                ownerID
+                ownerID,
+                projectID: req.params.projectID
             }).toArray((err, queue) => {
                 if (err) reject()
 

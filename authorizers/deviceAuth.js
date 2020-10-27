@@ -54,7 +54,7 @@ module.exports = {
             })
         })
     },
-    checkPolicies: (author, device, checkFor, feed) => {
+    checkPolicies: (author, device, checkFor) => {
         return new Promise(async (resolve, reject) => {
             await dataCamp.collection('devices').findOne({
                 id: author
@@ -83,23 +83,10 @@ module.exports = {
                         var allowedActions = statements.find(stmt => stmt.Effect == "Allow")
 
                         allowedActions.Action.forEach(action => {
-                            if (action.search("Publish") != -1) {
-                                var allowedFeeds = action.split(':')[1]
-
-                                if (allowedFeeds == "*") {
-                                    resolve("OK")
-                                } else {
-                                    allowedFeeds = allowedFeeds.split(',');
-
-                                    totalAllowed = 0;
-                                    var allowedFeed = allowedFeeds.find(f => feed == f)
-
-                                    if(typeof allowedFeed == "undefined"){
-                                        reject(policy.policy.name)
-                                    }else{
-                                        resolve("OK")
-                                    }
-                                }
+                            if (action.search(checkFor) != -1) {
+                                resolve("OK")
+                            }else{
+                                reject("ERR")
                             }
                         })
                     })

@@ -11,7 +11,7 @@ module.exports = {
     checkNotAuthenticated: (req, res, next) => {
 
         if(req.isAuthenticated()){
-            return res.redirect('/console')
+            return res.redirect('/projects')
         }
 
         return next()

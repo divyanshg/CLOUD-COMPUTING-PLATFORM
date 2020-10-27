@@ -6,11 +6,12 @@ dCamp.connect()
     .catch(e => console.log(e))
 
 module.exports = {
-    getDevices: async (ownerID) => {
+    getDevices: async (projectID, ownerID) => {
         return new Promise(async (resolve, reject) => {
             
             await dataCamp.collection('devices').find({
-                ownerID
+                ownerID,
+                projectID,
             }, {
                 projection: {
                     _id: 0
@@ -22,7 +23,7 @@ module.exports = {
             })
         })
     },
-    getDevice: async (deviceTofind) => {
+    getDevice: async (projectID, deviceTofind) => {
         const ownerID = deviceTofind.split('/')[0]
         const name = deviceTofind.split('/')[1]
         const tag = deviceTofind.split('/')[2]
@@ -31,6 +32,7 @@ module.exports = {
 
             await dataCamp.collection('devices').findOne({
                 ownerID,
+                projectID,
                 name,
                 tag
             }, {

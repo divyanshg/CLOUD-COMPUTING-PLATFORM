@@ -16,16 +16,18 @@ var {
     updateDashboardId
 } = require('../models/dashboard-render-helper')
 
-router.get('', checkAuthenticated, async (req, res) => {
+router.get('/:projectID', checkAuthenticated, async (req, res) => {
     res.render('devices/index.ejs', {
-        devices: await getDevices(req.user.id)
+        devices: await getDevices(req.params.projectID, req.user.id),
+        projectID:req.params.projectID
     })
 })
 
-router.get('/:device/:tag', checkAuthenticated, async (req, res) => {
+router.get('/:device/:tag/:projectID', checkAuthenticated, async (req, res) => {
     res.render('devices/device.ejs', {
         owner: req.user.id,
-        device: await getDevice(`${req.user.id}/${req.params.device}/${req.params.tag}`)
+        device: await getDevice(req.params.projectID,`${req.user.id}/${req.params.device}/${req.params.tag}`),
+        projectID:req.params.projectID
     })
 })
 

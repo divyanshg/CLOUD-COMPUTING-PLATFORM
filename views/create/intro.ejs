@@ -16,6 +16,7 @@
 
 <body class="bg-gray-200">
     <a class="skip-link" href="#maincontent">Skip to main</a>
+     <%- include('../add-ons/preloader.ejs') %>
     <div>
         <nav class="bg-gray-800 fixed w-full top-0 inset-x-0">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,29 +28,105 @@
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Monitor</a>
+<a href="/dashboard/<%= projectID %>"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Monitor</a>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Activity</a>
+                                <a href="/activity/<%= projectID %>"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Activity</a>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Onboard</a>
+                                <div href="#" onmouseover="$('.onboardFlyout').show()"
+                                    onmouseleave="$('.onboardFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Onboard
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg onboardFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <a href="/dashboard/connIntro/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                    Get started</li>
+                                            </a>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Provisioning templates</li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Manage</a>
+                                <div href="#" onmouseover="$('.manageFlyout').show()"
+                                    onmouseleave="$('.manageFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Manage
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg manageFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <a href="/devices/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                    Devices</li>
+                                            </a>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Types</li>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Device groups</li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Secure</a>
+                                <div href="#" onmouseover="$('.secureFlyout').show()"
+                                    onmouseleave="$('.secureFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Secure
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg secureFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <a href="/certificates/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                    Certificates</li>
+                                            </a>
+                                            <a href="/policy/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                    Policies</li>
+                                            </a>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Authorizers</li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Defend</a>
+                                <a href="#" onmouseover="$('.defendFlyout').show()"
+                                    onmouseleave="$('.defendFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Defend
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg defendFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <li
+                                                class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                Certificates</li>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Policies</li>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Authorizers</li>
+                                        </ul>
+                                    </div>
+                                </a>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Act</a>
+                                <div href="#" onmouseover="$('.actFlyout').show()" onmouseleave="$('.actFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Act
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg actFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <li
+                                                class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                Rules</li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Test</a>
+                                <a href="/test"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Test</a>
                             </div>
                         </div>
                     </div>
@@ -186,7 +263,7 @@
                             connection wizard for AWS IoT Device SDKs.</span>
                     </div>
                     <div class="w-full p-4 items-center">
-                        <a href="/create/single-provision" class="bg-blue-400 text-white py-2 px-4 rounded-lg float-right mb-3 w-1/2 text-center">Get
+                        <a href="/create/single-provision/<%= projectID %>" class="bg-blue-400 text-white py-2 px-4 rounded-lg float-right mb-3 w-1/2 text-center">Get
                             started</a>
                     </div>
                 </div>
@@ -197,7 +274,7 @@
                             and registry settings for your devices.</span>
                     </div>
                     <div class="w-full p-4 items-center">
-                        <a href="/create/bulk-provisions" class="bg-blue-400 text-white py-2 px-4 rounded-lg float-right mb-3 w-1/2 text-center">Get
+                        <a href="/create/bulk-provisions/<%= projectID %>" class="bg-blue-400 text-white py-2 px-4 rounded-lg float-right mb-3 w-1/2 text-center">Get
                             started</a>
                     </div>
                 </div>
