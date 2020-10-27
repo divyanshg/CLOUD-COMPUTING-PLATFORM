@@ -77,6 +77,7 @@ app.use('/create', require('../routes/create/index'))
 app.use('/policy', require('../routes/policy/index'))
 app.use('/devices', require('../routes/devices'))
 app.use('/api', require('../routes/api/index'))
+app.use('/resources', express.static(__dirname + '/resources'));
 
 //GraphQL API
 
@@ -145,32 +146,16 @@ io.on('connection', (socket) => {
         if (typeof io.sockets.adapter.rooms["dashboard_" + data.authorId + "_iot"] == 'undefined') return
         if (!io.sockets.adapter.rooms["dashboard_" + data.authorId + "_iot"].sockets[socket.id]) return
 
-        if (typeof io.sockets.adapter.rooms[data.deviceID] == 'undefined') {
-            console.log("device is offline")
-            saveCache(data)
-            return
-        }
 
-        const feed = await getFeedInfo(data.feed),
-            device = await getDeviceinfo(data.deviceID),
-            {
+        const {
                 author,
                 owner
             } = await getAuthorInfo(data.deviceID, false)
 
-        if (owner != device.ownerID || owner != data.authorId) return
 
-        feed.contentTypeMatches = (feed.dataType == typeof data.content)
-
-        if (feed.contentTypeMatches) {
-            await updateLastData(data.feed, data.content, device.ownerID)
-
-            delete device.signature;
-            delete device.policies;
 
             const formattedData = {
                 feed,
-                device,
                 id: v4(),
                 type: typeof data.content,
                 content: data.content,
@@ -183,58 +168,47 @@ io.on('connection', (socket) => {
             }
 
 
-            io.to(data.deviceID).emit(feed.name, formattedData)
-            io.to(data.deviceID).emit(feed.id, formattedData)
+            //io.to(data.deviceID).emit(feed.name, formattedData)
+            //io.to(data.deviceID).emit(feed.id, formattedData)
             io.to(`dashboard_${device.ownerID}_iot`).emit('published', formattedData)
 
             formattedData.author.address = socket.handshake.address.replace('::ffff:', '')
             formattedData.author.time = socket.handshake.time
             formattedData.author.dashboardId = data.dashboardId
             await saveMessage(formattedData)
-        } else {
-            io.to(`dashboard_${device.ownerID}_iot`).emit(`invalid_data_type_sent`, {
-                feed: data.feed,
-                acceptedType: feed.dataType,
-                sentType: typeof data.content
-            })
-            return
-        }
     })
 
     socket.on('publish', async data => {
 
-        await checkPolicies(data.authorId, data.deviceID, "Publish", data.feed).then(async d => {
+        await checkPolicies(data.authorId, "Publish").then(async d => {
                 if (typeof io.sockets.adapter.rooms[data.authorId] == 'undefined') return
                 if (!io.sockets.adapter.rooms[data.authorId].sockets[socket.id]) return
+                
+                console.log(data)
+                // const feed = await getFeedInfo(data.feed),
+                //     device = await getDeviceinfo(data.deviceID),
+                //     {
+                //         author,
+                //         owner
+                //     } = await getAuthorInfo(data.authorId, data.isDevice)
 
-                if (typeof io.sockets.adapter.rooms[data.deviceID] == 'undefined') {
-                    saveCache(data)
-                    return
-                }
-                const feed = await getFeedInfo(data.feed),
-                    device = await getDeviceinfo(data.deviceID),
-                    {
-                        author,
-                        owner
-                    } = await getAuthorInfo(data.authorId, data.isDevice)
+                // if (owner != device.ownerID) return
 
-                if (owner != device.ownerID) return
+                // feed.contentTypeMatches = (feed.dataType == typeof data.content)
 
-                feed.contentTypeMatches = (feed.dataType == typeof data.content)
+                // delete device.signature;
+                // delete device.policies;
 
-                delete device.signature;
-                delete device.policies;
-
-                if (feed.contentTypeMatches) {
-                    publishData(data, feed, device, author, owner, socket)
-                } else {
-                    io.to(data.authorId).emit(`invalid_data_type_sent`, {
-                        feed: data.feed,
-                        acceptedType: feed.dataType,
-                        sentType: typeof data.content
-                    })
-                    return
-                }
+                // if (feed.contentTypeMatches) {
+                //     //publishData(data, feed, device, author, owner, socket)
+                // } else {
+                //     io.to(data.authorId).emit(`invalid_data_type_sent`, {
+                //         feed: data.feed,
+                //         acceptedType: feed.dataType,
+                //         sentType: typeof data.content
+                //     })
+                //     return
+                // }
             })
             .catch(policy => {
                 io.to(data.authorId).emit('publish_err', "Publish was not allowed by device policies.\nPolicy : " + policy)

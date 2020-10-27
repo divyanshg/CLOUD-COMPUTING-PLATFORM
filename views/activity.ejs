@@ -8,6 +8,7 @@
 
 <body class="bg-gray-200">
     <a class="skip-link" href="#maincontent">Skip to main</a>
+     <%- include('./add-ons/preloader.ejs') %>
     <div>
         <nav class="bg-gray-800 fixed w-full top-0 inset-x-0">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,10 +20,10 @@
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
-                                <a href="/dashboard"
+                                <a href="/dashboard/<%= projectID %>"
                                     class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Monitor</a>
 
-                                <a href="/activity"
+                                <a href="/activity/<%= projectID %>"
                                     class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Activity</a>
 
                                 <div href="#" onmouseover="$('.onboardFlyout').show()"
@@ -68,12 +69,12 @@
                                     <div
                                         class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg secureFlyout hidden animate__animated animate__fadeIn animate__faster">
                                         <ul class="text-black m-0">
-                                            <a href="/certificates">
+                                            <a href="/certificates/<%= projectID %>">
                                                 <li
                                                     class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
                                                     Certificates</li>
                                             </a>
-                                            <a href="/policy">
+                                            <a href="/policy/<%= projectID %>">
                                                 <li
                                                     class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
                                                     Policies</li>
@@ -120,6 +121,8 @@
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
+                            <!-- Projects Dropdown -->
+                                <%- include('./add-ons/project-switch-component.ejs') %>
                             <button
                                 class="p-1 border-2 border-transparent text-gray-400 rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700"
                                 aria-label="Notifications">
@@ -253,7 +256,7 @@
                                     class="widget-title border-b-2 py-2 pb-4 border-dashed border-gray-400 text-lg text-black w-full flex">
                                     <span class="w-full ml-4">Current action</span>
                                     <span class="w-1/6">
-                                        <a href="/create/bulk-provisions"
+                                        <a href="/create/bulk-provisions/<%= projectID %>"
                                             class="border border-gray-400 text-black rounded m-2 p-2 hover:border-black hover:bg-gray-100">New
                                             registration</a>
                                     </span>
@@ -267,7 +270,7 @@
                                                 running at this time.</span> <br>
                                             <span>When you start a bulk registration process, it will show up
                                                 here.</span><br><br>
-                                            <a href="/create/bulk-provisions"
+                                            <a href="/create/bulk-provisions/<%= projectID %>"
                                                 class="border border-gray-400 text-black rounded m-2 p-2 hover:border-black hover:bg-gray-100">Start
                                                 registration</a>
                                         </div>
@@ -404,7 +407,7 @@
             </div>
         </main>
     </div>
-
+<%- include('./add-ons/project-switch.ejs') %>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

@@ -81,16 +81,16 @@ router.get('/projects', checkAuthenticated, async (req, res) => {
 
 router.get('/project/:id', checkAuthenticated, async (req, res) => {
     req.user.project = req.params.id
-    res.redirect('/dashboard?project='+req.params.id)
+    res.redirect('/dashboard/'+req.params.id)
     //renderDashboard(req, res)
     //res.render('services/index.ejs', { projectID: req.params.id })
 })
 
-router.get('/dashboard', checkAuthenticated, renderDashboard)
-router.get('/dashboard/connIntro', checkAuthenticated, (req, res) => {
-    res.render('create/intro.ejs')
+router.get('/dashboard/:projectID', checkAuthenticated, renderDashboard)
+router.get('/dashboard/connIntro/:projectID', checkAuthenticated, (req, res) => {
+    res.render('create/intro.ejs', { projectID: req.params.projectID })
 })
-router.get('/activity', checkAuthenticated, renderActivity)
+router.get('/activity/:projectID', checkAuthenticated, renderActivity)
 
 router.get('/deviceIcon/:iconsrc', checkAuthenticated, (req, res) => {
     res.sendFile(__dirname + '/icons/' + req.params.iconsrc)

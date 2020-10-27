@@ -5,6 +5,9 @@ dCamp.connect()
     .then(async () => dataCamp = await dCamp.get().collection("Projects"))
     .catch(e => console.log(e))
 
+const {
+    uuid
+} = require('uuidv4');
 
 module.exports = {
     getProjects: (ownerID) => {
@@ -22,5 +25,11 @@ module.exports = {
                 resolve(project)
             })
         })
-    }
+    },
+    createProject: async (req, res) => {
+        await dataCamp.insertOne({ id: uuid(), name: req.body.name, ownerID: req.user.id, createdAt: Date.now() }, (err, resp) => {
+            if(err) res.sendStatus(500)
+            res.sendStatus(200)
+        })
+    }   
 }

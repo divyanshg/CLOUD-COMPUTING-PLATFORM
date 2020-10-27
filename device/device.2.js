@@ -7,7 +7,7 @@ Device.login('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJRCI6InVpdWQtNnVpa
         console.log(device)
         setInterval(() => {
             device.publish({
-                deviceID: "uiue-6uihu-niu56-nio546-noi645-435iu",
+                //deviceID: "uiue-6uihu-niu56-nio546-noi645-435iu",
                 feed: "somerandomfeed",
                 content: Math.floor(Math.random() * 100).toString(),
                 authorId: "uiud-6uihu-niu56-nio546-noi645-435iu"

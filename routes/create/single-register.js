@@ -12,7 +12,7 @@ const {
 } = require('uuid')
 
 module.exports = { 
-    saveDevice: ({user, device}) => {
+    saveDevice: ({user, device, projectID}) => {
         return new Promise(async (resolve, reject) => {
             const id = v4();
             const signature = v4()
@@ -21,7 +21,7 @@ module.exports = {
 
             const token = jwt.create(claims, signature)
 
-            await dataCamp.insertOne({ id, name: device.name, feedCount: device.feeds.length, ownerID: user.id, signature, type: device.type, group: device.group, token: token.toString() }, (err, resp) => {
+            await dataCamp.insertOne({ id, name: device.name, projectID, feedCount: device.feeds.length, ownerID: user.id, signature, type: device.type, group: device.group, token: token.toString() }, (err, resp) => {
                 if(err) reject(err)
                 resolve(resp)
             })

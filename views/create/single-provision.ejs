@@ -16,6 +16,7 @@
 
 <body class="bg-gray-200">
     <a class="skip-link" href="#maincontent">Skip to main</a>
+     <%- include('../add-ons/preloader.ejs') %>
     <div>
         <nav class="bg-gray-800 fixed w-full top-0 inset-x-0">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,42 +28,133 @@
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Monitor</a>
+                                <a href="/dashboard/<%= projectID %>"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Monitor</a>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Activity</a>
+                                <a href="/activity/<%= projectID %>"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Activity</a>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Onboard</a>
+                                <div href="#" onmouseover="$('.onboardFlyout').show()"
+                                    onmouseleave="$('.onboardFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Onboard
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg onboardFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <a href="/dashboard/connIntro/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                    Get started</li>
+                                            </a>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Provisioning templates</li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Manage</a>
+                                <div href="#" onmouseover="$('.manageFlyout').show()"
+                                    onmouseleave="$('.manageFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Manage
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg manageFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <a href="/devices/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                    Devices</li>
+                                            </a>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Types</li>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Device groups</li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Secure</a>
+                                <div href="#" onmouseover="$('.secureFlyout').show()"
+                                    onmouseleave="$('.secureFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Secure
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg secureFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <a href="/certificates/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                    Certificates</li>
+                                            </a>
+                                            <a href="/policy/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                    Policies</li>
+                                            </a>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Authorizers</li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Defend</a>
+                                <a href="#" onmouseover="$('.defendFlyout').show()"
+                                    onmouseleave="$('.defendFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Defend
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg defendFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <li
+                                                class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                Certificates</li>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Policies</li>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Authorizers</li>
+                                        </ul>
+                                    </div>
+                                </a>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Act</a>
+                                <div href="#" onmouseover="$('.actFlyout').show()" onmouseleave="$('.actFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Act
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg actFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <li
+                                                class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                Rules</li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-                                <a href="#"
-                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Test</a>
+                                <a href="/test"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Test</a>
                             </div>
                         </div>
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
-                            <button
-                                class="p-1 border-2 border-transparent text-gray-400 rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700"
-                                aria-label="Notifications">
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                </svg>
-                            </button>
+                            <!-- Projects Dropdown -->
+                            <%- include('../add-ons/project-switch-component.ejs') %>
+
+                            <div class="ml-3 relative">
+                                <div>
+                                    <button
+                                        class="p-1 border-2 border-transparent text-white rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700 bg-indigo-300"
+                                        aria-label="Notifications">
+                                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                        </svg>
+                                    </button>
+
+                                    <div class="notification-drawer origin-top-right absolute right-0 mt-2 rounded-md shadow-lg hidden"
+                                        style="width:300px;">
+                                        <div class="py-1 rounded-md bg-white shadow-xs notif-cont" role="menu"
+                                            aria-orientation="vertical" aria-labelledby="user-menu">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Profile dropdown -->
                             <div class="ml-3 relative">
@@ -176,7 +268,7 @@
                     Register a device
                 </h1>
                 <div class="bg-white px-4 flex">
-                    <a href="/create/provisioning"
+                    <a href="/create/provisioning/<%= projectID %>"
                         class="border border-gray-300 text-black px-4 py-2 rounded mx-1">Cancel</a>
                     <button class="svd-btn border bg-blue-400 text-white px-4 py-2 rounded mx-1 addDevice">Next</button>
                 </div>
@@ -395,7 +487,7 @@
             </div>
         </div>
     </div>
-
+<%- include('../add-ons/project-switch.ejs') %>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
@@ -420,7 +512,7 @@
     $(".cdt-btn").on('click', async () => {
         var deviceTypeName = $("#deviceType").val()
 
-        await fetch('/create/device-type', {
+        await fetch('/create/device-type/<%= projectID %>', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -447,7 +539,19 @@
         var group = $(".dg-list").val();
         const feeds = JSON.parse(feeditor.getValue())
 
-        await fetch('/create/single-device', {
+        $(".notif-cont").append(`<div class="notification h-16 w-full px-4 py-2 hover:bg-gray-300 flex animate__animated animate__fadeIn animate__faster">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" class="w-1/5 mr-6 mt-3 hidden dev-done text-green-500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M9.00012 12L11.0001 14L15.0001 10M7.83486 4.69705C8.55239 4.63979 9.23358 4.35763 9.78144 3.89075C11.0599 2.80123 12.9403 2.80123 14.2188 3.89075C14.7667 4.35763 15.4478 4.63979 16.1654 4.69705C17.8398 4.83067 19.1695 6.16031 19.3031 7.83474C19.3603 8.55227 19.6425 9.23346 20.1094 9.78132C21.1989 11.0598 21.1989 12.9402 20.1094 14.2187C19.6425 14.7665 19.3603 15.4477 19.3031 16.1653C19.1695 17.8397 17.8398 19.1693 16.1654 19.303C15.4479 19.3602 14.7667 19.6424 14.2188 20.1093C12.9403 21.1988 11.0599 21.1988 9.78144 20.1093C9.23358 19.6424 8.55239 19.3602 7.83486 19.303C6.16043 19.1693 4.83079 17.8397 4.69717 16.1653C4.63991 15.4477 4.35775 14.7665 3.89087 14.2187C2.80135 12.9402 2.80135 11.0598 3.89087 9.78132C4.35775 9.23346 4.63991 8.55227 4.69717 7.83474C4.83079 6.16031 6.16043 4.83067 7.83486 4.69705Z" stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                                <div class="spinner dev-spin w-1/5 mr-6 mt-3"></div>
+                                                <div class="w-full">
+                                                    <span class="font-semibold text-black dev-notif-title">Creating Device</span>
+                                                    <br>
+                                                    <span class="text-sm text-black">${name}</span>
+                                                </div>
+                                            </div>`)
+
+        await fetch('/create/single-device/<%= projectID %>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -459,6 +563,16 @@
                 group,
                 feeds
             })
+        })
+        .then(() => {
+            setTimeout(() => {
+                    $(".dev-done").show()
+                    $(".dev-spin").hide()
+                    $(".dev-notif-title").html("Device Created : ")
+                    setTimeout(() => {
+                        window.location.replace('/devices/<%= projectID %>')
+                    }, 1500)
+                }, 2000)
         })
 
     })

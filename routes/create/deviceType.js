@@ -32,7 +32,7 @@ module.exports = {
         await dataCamp.insertOne({
             name: req.body.name,
             ownerID: req.user.id,
-            projectID: "293522617",
+            projectID: req.params.projectID,
             resource
         }, (err, resp) => {
             if (err) res.sendStatus(500);
