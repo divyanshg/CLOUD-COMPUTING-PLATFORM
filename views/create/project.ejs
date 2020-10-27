@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../headers.ejs') %>
+</head>
+
+<body class="bg-white">
+    <a class="skip-link" href="#maincontent">Skip to main</a>
+     <%- include('../add-ons/preloader.ejs') %>
+    <div>
+        <nav
+            class="theme-blue text-white fixed w-full top-0 inset-x-0 shadow-lg animate__animated animate__slideInDown animate__faster z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center -ml-4">
+                        <div class="flex-shrink-0 ml-3">
+                            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-on-dark.svg"
+                                alt="Workflow logo">
+                        </div>
+                        <div class="hidden md:block">
+
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <div class="ml-3 relative">
+                                <div>
+                                    <button
+                                        class="p-1 border-2 border-transparent text-white rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700 bg-indigo-300"
+                                        aria-label="Notifications">
+                                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                        </svg>
+                                    </button>
+
+                                    <div class="notification-drawer origin-top-right absolute right-0 mt-2 rounded-md shadow-lg hidden"
+                                        style="width:300px;">
+                                        <div class="py-1 rounded-md bg-white shadow-xs notif-cont" role="menu"
+                                            aria-orientation="vertical" aria-labelledby="user-menu">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Profile dropdown -->
+                            <div class="ml-3 relative">
+                                <div>
+                                    <button onmouseover="$('.profile-drop').show()"
+                                        class="max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none focus:shadow-solid"
+                                        id="user-menu" aria-label="User menu" aria-haspopup="true">
+                                        <img class="h-8 w-8 rounded-full"
+                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            alt="">
+                                    </button>
+                                </div>
+                                <div onmouseover="$('.profile-drop').show()" onmouseleave="$('.profile-drop').hide()"
+                                    class="profile-drop origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg hidden">
+                                    <div class="py-1 rounded-md bg-white shadow-xs" role="menu"
+                                        aria-orientation="vertical" aria-labelledby="user-menu">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                            role="menuitem">Your Profile</a>
+
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                            role="menuitem">Settings</a>
+
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                            role="menuitem">Sign out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <header class="bg-white shadow mt-16 animate__animated animate__fadeIn animate__faster">
+            <div class="flex max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl w-full font-bold leading-tight text-gray-900">
+                    New Project
+                </h1>
+            </div>
+        </header>
+        <main>
+            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <!-- Replace with your content -->
+                <div class="px-4 py-6 sm:px-0">
+                    <div class="w-full h-auto">
+                        <div class="project-form row w-1/5 border border-gray-300 rounded shadow-md p-4">
+                            <div>
+                                <label for="price"
+                                    class="block text-lg leading-5 font-medium text-gray-700">Name</label>
+                                <span class="text-sm text-gray-600">Give your project a name</span>
+                                <div class="mt-1 relative">
+                                    <input id="name"
+                                        class="form-input block w-full mt-4 pl-7 p-2 border border-gray-400 rounded pr-12 sm:text-sm sm:leading-5"
+                                        placeholder="E.x. Farming Project">
+                                    <button class="create-project theme-blue rounded w-full p-2 text-white mt-3">Create
+                                        project</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /End replace -->
+            </div>
+        </main>
+    </div>
+</body>
+<script>
+    $(".create-project").on("click", async () => {
+        $(".notif-cont").append(`<div class="notification h-16 w-full px-4 py-2 hover:bg-gray-300 flex animate__animated animate__fadeIn animate__faster">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" class="w-1/5 mr-6 mt-3 hidden prj-done text-green-500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M9.00012 12L11.0001 14L15.0001 10M7.83486 4.69705C8.55239 4.63979 9.23358 4.35763 9.78144 3.89075C11.0599 2.80123 12.9403 2.80123 14.2188 3.89075C14.7667 4.35763 15.4478 4.63979 16.1654 4.69705C17.8398 4.83067 19.1695 6.16031 19.3031 7.83474C19.3603 8.55227 19.6425 9.23346 20.1094 9.78132C21.1989 11.0598 21.1989 12.9402 20.1094 14.2187C19.6425 14.7665 19.3603 15.4477 19.3031 16.1653C19.1695 17.8397 17.8398 19.1693 16.1654 19.303C15.4479 19.3602 14.7667 19.6424 14.2188 20.1093C12.9403 21.1988 11.0599 21.1988 9.78144 20.1093C9.23358 19.6424 8.55239 19.3602 7.83486 19.303C6.16043 19.1693 4.83079 17.8397 4.69717 16.1653C4.63991 15.4477 4.35775 14.7665 3.89087 14.2187C2.80135 12.9402 2.80135 11.0598 3.89087 9.78132C4.35775 9.23346 4.63991 8.55227 4.69717 7.83474C4.83079 6.16031 6.16043 4.83067 7.83486 4.69705Z" stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                                <div class="spinner prj-spin w-1/5 mr-6 mt-3"></div>
+                                                <div class="w-full">
+                                                    <span class="font-semibold text-black prj-notif-title">Creating Project</span>
+                                                    <br>
+                                                    <span class="text-sm text-black">${$("#name").val()}</span>
+                                                </div>
+                                            </div>`)
+        await fetch('/create/project', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: $("#name").val()
+                })
+            })
+            .then(() => {
+                setTimeout(() => {
+                    $(".prj-done").show()
+                    $(".prj-spin").hide()
+                    $(".prj-notif-title").html("Project Created : ")
+                    setTimeout(() => {
+                        window.location.replace('/projects')
+                    }, 1500)
+                }, 2000)
+            })
+    })
+</script>
+
+</html>

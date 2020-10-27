@@ -5,11 +5,22 @@ const bcrypt = require('bcrypt')
 const passport = require('passport')
 
 const user = require('../models/getUser')
-const { checkAuthenticated, checkNotAuthenticated } = require('../authorizers/users')
+const {
+    checkAuthenticated,
+    checkNotAuthenticated
+} = require('../authorizers/users')
 
-const { renderDashboard, renderActivity } = require('../view-renderers/dashboard')
-
+const {
+    renderDashboard,
+    renderActivity
+} = require('../view-renderers/dashboard')
+const {
+    getProjects
+} = require('../models/projects')
 const initializePassport = require('../configs/passport-config')
+const {
+    exec
+} = require('child_process');
 
 initializePassport(passport)
 
@@ -21,7 +32,7 @@ router.get('/login', checkNotAuthenticated, (req, res) => res.render('./accounts
 router.get('/login', checkNotAuthenticated, (req, res) => res.render('./accounts/login.ejs'))
 
 router.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/dashboard',
+    successRedirect: '/projects',
     failureRedirect: '/login',
     failureFlash: true
 }))
@@ -62,16 +73,29 @@ router.delete('/logout', checkAuthenticated, (req, res) => {
     res.redirect('/login')
 })
 
-
-
-router.get('/dashboard', checkAuthenticated, renderDashboard)
-router.get('/dashboard/connIntro', checkAuthenticated, (req, res) => {
-    res.render('create/intro.ejs')
+router.get('/projects', checkAuthenticated, async (req, res) => {
+    res.render("projects/index.ejs", {
+        projects: await getProjects(req.user.id)
+    })
 })
-router.get('/activity', checkAuthenticated, renderActivity)
+
+router.get('/project/:id', checkAuthenticated, async (req, res) => {
+    req.user.project = req.params.id
+    res.redirect('/dashboard/'+req.params.id)
+    //renderDashboard(req, res)
+    //res.render('services/index.ejs', { projectID: req.params.id })
+})
+
+router.get('/dashboard/:projectID', checkAuthenticated, renderDashboard)
+router.get('/dashboard/connIntro/:projectID', checkAuthenticated, (req, res) => {
+    res.render('create/intro.ejs', { projectID: req.params.projectID })
+})
+router.get('/activity/:projectID', checkAuthenticated, renderActivity)
 
 router.get('/deviceIcon/:iconsrc', checkAuthenticated, (req, res) => {
-    res.sendFile(__dirname + '/icons/'+ req.params.iconsrc)
+    res.sendFile(__dirname + '/icons/' + req.params.iconsrc)
 })
+
+
 
 module.exports = router

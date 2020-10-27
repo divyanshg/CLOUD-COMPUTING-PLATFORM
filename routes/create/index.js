@@ -10,41 +10,96 @@ const {
     checkNotAuthenticated
 } = require('../../authorizers/users')
 
-const { addToQueue, getActivities } = require('../../models/bulk-register')
+const {
+    saveDevice
+} = require('./single-register')
+const {
+    addToQueue,
+    getActivities
+} = require('../../models/bulk-register')
 
-const { registerPolicy } = require('../../models/policy.js')
+const {
+    registerPolicy
+} = require('../../models/policy.js')
 
-const { getDeviceTypes, createDeviceType } = require('./deviceType')
+const {
+    getDeviceTypes,
+    createDeviceType
+} = require('./deviceType')
+
+const {
+    createProject,
+    getProjects,
+    getProject
+} = require('../../models/projects')
+
+
 
 router.get('/', checkAuthenticated, (req, res) => {
     res.redirect('/dashboard')
 })
 
-router.get('/provisioning', checkAuthenticated, (req, res) => {
-    res.render('create/provisioning.ejs')
-})
-
-router.get('/single-provision', checkAuthenticated, async (req, res) => {
-    res.render("create/single-provision.ejs", {
-      ownerID: "898435880938453458935",
-      deviceTypes: await getDeviceTypes(req.user.id, '293522617')
-    });
-})
-
-router.get('/bulk-provisions', checkAuthenticated, (req, res) => {
-    res.render('create/bulk-provisions.ejs')
-})
-
-router.post('/bulk-provisions', checkAuthenticated, addToQueue)
-
-router.get('/policy', checkAuthenticated, (req, res) => {
-    res.render('policy/new.ejs', {
-        owner: req.user.id
+router.get('/provisioning/:projectID', checkAuthenticated, async (req, res) => {
+    res.render('create/provisioning.ejs', {
+        projectID: req.params.projectID, 
+        project: await getProject(req.params.projectID),
+        projects: await getProjects(req.user.id)
     })
 })
 
-router.post('/policy', checkAuthenticated, registerPolicy)
+router.get('/single-provision/:projectID', checkAuthenticated, async (req, res) => {
+    res.render("create/single-provision.ejs", {
+        ownerID: req.user.id,
+        projectID: req.params.projectID, 
+        project: await getProject(req.params.projectID),
+        projects:await getProjects(req.user.id),
+        deviceTypes: await getDeviceTypes(req.user.id, req.params.projectID)
+    });
+})
 
-router.post('/device-type', checkAuthenticated, createDeviceType)
+router.post('/single-device/:projectID', checkAuthenticated, async (req, res) => {
+    delete req.user.pass;
+    await saveDevice({
+            user: req.user,
+            device: req.body,
+            projectID: req.params.projectID
+        })
+        .then(resp => {
+            res.sendStatus(200)
+        })
+        .catch(e => {
+            res.sendStatus(500)
+        })
+})
+
+router.get('/bulk-provisions/:projectID', checkAuthenticated, async (req, res) => {
+    res.render('create/bulk-provisions.ejs', {
+        projectID: req.params.projectID, 
+        project: await getProject(req.params.projectID),
+        projects: await getProjects(req.user.id)
+    })
+})
+
+router.post('/bulk-provisions/:projectID', checkAuthenticated, addToQueue)
+
+router.get('/policy/:projectID', checkAuthenticated, async (req, res) => {
+    res.render('policy/new.ejs', {
+        owner: req.user.id, 
+        project: await getProject(req.params.projectID),
+        projectID: req.params.projectID,
+        projects: await getProjects(req.user.id)
+    })
+})
+
+router.get('/project', checkAuthenticated, (req, res) => {
+    delete req.user.pass;
+    res.render('create/project.ejs', { user: req.user })
+})
+
+router.post('/project', checkAuthenticated, createProject)
+
+router.post('/policy/:projectID', checkAuthenticated, registerPolicy)
+
+router.post('/device-type/:projectID', checkAuthenticated, createDeviceType)
 
 module.exports = router
