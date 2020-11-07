@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actions</title>
+    <%- include('../headers.ejs'); %>
+    <style>
+        .actions{
+            height:400px;
+            background-color: #262626;
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+    <a class="skip-link" href="#maincontent">Skip to main</a>
+    <%- include('../add-ons/preloader.ejs') %>
+    <div>
+        <nav
+            class="theme-blue text-white fixed w-full top-0 inset-x-0 shadow-lg animate__animated animate__slideInDown animate__faster z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center -ml-4">
+                        <svg width="42" height="42" viewBox="0 0 24 24"
+                            class="cursor-pointer rounded-full hover:bg-indigo-400 p-2"
+                            onclick="$('.side-nav').toggle();$('.overlay').toggle()" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 6H20M4 12H20M4 18H20" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <div class="flex-shrink-0 ml-3">
+                            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-on-dark.svg"
+                                alt="Workflow logo">
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a href="/dashboard/<%= projectID %>"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Monitor</a>
+
+                                <a href="/activity/<%= projectID %>"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Activity</a>
+
+                                <div href="#" onmouseover="$('.onboardFlyout').show()"
+                                    onmouseleave="$('.onboardFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Onboard
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg onboardFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <a href="/dashboard/connIntro/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                    Get started</li>
+                                            </a>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Provisioning templates</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div href="#" onmouseover="$('.manageFlyout').show()"
+                                    onmouseleave="$('.manageFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Manage
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg manageFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <a href="/devices/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                    Devices</li>
+                                            </a>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Types</li>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Device groups</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div href="#" onmouseover="$('.secureFlyout').show()"
+                                    onmouseleave="$('.secureFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Secure
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg secureFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <a href="/certificates/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                    Certificates</li>
+                                            </a>
+                                            <a href="/policy/<%= projectID %>">
+                                                <li
+                                                    class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                    Policies</li>
+                                            </a>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Authorizers</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <a href="#" onmouseover="$('.defendFlyout').show()"
+                                    onmouseleave="$('.defendFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Defend
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg defendFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <li
+                                                class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                Certificates</li>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Policies</li>
+                                            <li class="w-full p-3 rounded border-b border-gray-200 hover:bg-gray-200">
+                                                Authorizers</li>
+                                        </ul>
+                                    </div>
+                                </a>
+
+                                <div href="#" onmouseover="$('.actFlyout').show()" onmouseleave="$('.actFlyout').hide()"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">
+                                    Act
+                                    <div
+                                        class=" w-48 -ml-16 rounded-lg bg-white z-10 absolute mt-3 shadow-lg actFlyout hidden animate__animated animate__fadeIn animate__faster">
+                                        <ul class="text-black m-0">
+                                            <li
+                                                class="w-full p-3 rounded-lg border-b border-gray-200 hover:bg-gray-200">
+                                                Rules</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <a href="/test"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white hover:bg-indigo-400 focus:outline-none focus:text-white focus:bg-gray-700">Test</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+
+                            <!-- Projects Dropdown -->
+                            <%- include('../add-ons/project-switch-component.ejs') %>
+
+                            <button
+                                class="p-1 border-2 border-transparent text-white rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700"
+                                aria-label="Notifications">
+                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                            </button>
+
+                            <!-- Profile dropdown -->
+                            <div class="ml-3 relative">
+                                <div>
+                                    <button onmouseover="$('.profile-drop').show()"
+                                        class="max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none focus:shadow-solid"
+                                        id="user-menu" aria-label="User menu" aria-haspopup="true">
+                                        <img class="h-8 w-8 rounded-full"
+                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            alt="">
+                                    </button>
+                                </div>
+                                <!--
+                Profile dropdown panel, show/hide based on dropdown state.
+
+                Entering: "transition ease-out duration-100"
+                  From: "transform opacity-0 scale-95"
+                  To: "transform opacity-100 scale-100"
+                Leaving: "transition ease-in duration-75"
+                  From: "transform opacity-100 scale-100"
+                  To: "transform opacity-0 scale-95"
+              -->
+                                <div onmouseover="$('.profile-drop').show()" onmouseleave="$('.profile-drop').hide()"
+                                    class="profile-drop origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg hidden">
+                                    <div class="py-1 rounded-md bg-white shadow-xs" role="menu"
+                                        aria-orientation="vertical" aria-labelledby="user-menu">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                            role="menuitem">Your Profile</a>
+
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                            role="menuitem">Settings</a>
+
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                            role="menuitem">Sign out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="-mr-2 flex md:hidden">
+                        <!-- Mobile menu button -->
+                        <button
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white">
+                            <!-- Menu open: "hidden", Menu closed: "block" -->
+                            <svg class="block h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <!-- Menu open: "block", Menu closed: "hidden" -->
+                            <svg class="hidden h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!--
+      Mobile menu, toggle classes based on menu state.
+
+      Open: "block", closed: "hidden"
+    -->
+            <div class="hidden md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Dashboard</a>
+
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Team</a>
+
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Projects</a>
+
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Calendar</a>
+
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Reports</a>
+                </div>
+                <div class="pt-4 pb-3 border-t border-gray-700">
+                    <div class="flex items-center px-5 space-x-3">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full"
+                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt="">
+                        </div>
+                        <div class="space-y-1">
+                            <div class="text-base font-medium leading-none text-white"><%= user.name %></div>
+                            <div class="text-sm font-medium leading-none text-gray-400"><%= user.email %></div>
+                        </div>
+                    </div>
+                    <div class="mt-3 px-2 space-y-1">
+                        <a href="#"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Your
+                            Profile</a>
+
+                        <a href="#"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Settings</a>
+
+                        <a href="#"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Sign
+                            out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <header class="bg-white shadow mt-16 animate__animated animate__fadeIn animate__faster">
+            <div class="flex max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl w-full font-bold leading-tight text-gray-900">
+                    Actions
+                </h1>
+            </div>
+        </header>
+        <div class="w-full h-full bg-black overlay fixed inset-x-0 hidden" style="top:64px;z-index:9;opacity: 0.3;"
+            onclick="$('.side-nav').hide();$('.overlay').hide()"></div>
+        <div class="side-nav services-panel h-full bg-white shadow-md fixed insex-x-0 z-10 border-r border-gray-300 animate__animated animate__slideInLeft animate__faster hidden p-4"
+            style="width: 300px; top:64px;">
+            <span class="text-sm text-gray-700">COMPUTE</span>
+            <ul class="compute-ul w-full m-0 p-0 h-auto mt-4 font-semibold">
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="#4A5568" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Cloud Functions
+                </li>
+            </ul>
+            <br>
+            <span class="text-sm text-gray-700">STORAGE</span>
+            <br>
+            <ul class="compute-ul w-full m-0 p-0 h-auto mt-2 font-semibold">
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="#4A5568" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    File Store
+                </li>
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 7V17C4 19.2091 7.58172 21 12 21C16.4183 21 20 19.2091 20 17V7M4 7C4 9.20914 7.58172 11 12 11C16.4183 11 20 9.20914 20 7M4 7C4 4.79086 7.58172 3 12 3C16.4183 3 20 4.79086 20 7M20 12C20 14.2091 16.4183 16 12 16C7.58172 16 4 14.2091 4 12"
+                            stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Data Lake
+                </li>
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 7V17C4 19.2091 7.58172 21 12 21C16.4183 21 20 19.2091 20 17V7M4 7C4 9.20914 7.58172 11 12 11C16.4183 11 20 9.20914 20 7M4 7C4 4.79086 7.58172 3 12 3C16.4183 3 20 4.79086 20 7M20 12C20 14.2091 16.4183 16 12 16C7.58172 16 4 14.2091 4 12"
+                            stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Realtime Storage
+                </li>
+            </ul>
+            <br>
+            <span class="text-sm text-gray-700">TOOLS</span>
+            <br>
+            <ul class="compute-ul w-full m-0 p-0 h-auto mt-2 font-semibold">
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="#4A5568" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Device Registry
+                </li>
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="#4A5568" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Cloud Scheduler
+                </li>
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="#4A5568" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    API Gateway
+                </li>
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="#4A5568" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Endpoints
+                </li>
+            </ul>
+            <br>
+            <span class="text-sm text-gray-700">ARTIFICIAL INTELLIGENCE</span>
+            <br>
+            <ul class="compute-ul w-full m-0 p-0 h-auto mt-2 font-semibold">
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="#4A5568" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Automation
+                </li>
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="#4A5568" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Cloud Vision
+                </li>
+                <li class="w-full p-2 hover:bg-gray-300 rounded-lg cursor-pointer flex mb-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mr-2" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="#4A5568" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Video Monitoring
+                </li>
+            </ul>
+        </div>
+        <main>
+            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <!-- Replace with your content -->
+                <div class="px-4 py-6 sm:px-0">
+                    <div class="w-full h-auto">
+                        <div class="row flex w-full animate__animated animate__fadeIn">
+                            <% actions.forEach(action => { %>
+                            <a href="/actions/<%= action.id %>/<%= projectID %>" class="widget relative actions w-1/6 p-4 px-5 rounded-lg m-2 shadow-lg cursor-pointer">
+                                <div
+                                    class="widget-title py-2 pb-4 text-4xl font-bold text-white w-full">
+                                    <span><%= action.title %></span>
+                                </div>
+                                <div class="w-full flex h-auto p-2">
+                                    <span class="mb-6 absolute bottom-0 left-0 mx-4 text-white font-semibold text-lg uppercase py-2 px-4 rounded-full bg-black"><%= action.status %></span>
+                                    <span class="mb-6 absolute bottom-0 right-0 mx-4 text-white font-semibold text-lg uppercase py-3 px-5 rounded-full w-1/5">
+                                        <img src="https://assets.ifttt.com/images/channels/65067518/icons/monochrome_regular.png" width="36" height="36" alt="Google Assistant" title="Google Assistant">
+                                    </span>
+                                </div>
+                            </a>
+                            <% }) %>
+                        </div>
+                        <div class="row flex w-full">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /End replace -->
+            </div>
+        </main>
+        <%- include('../add-ons/project-switch.ejs') %>
+</body>
+
+</html>

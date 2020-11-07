@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon ./src/server.js",
+    "actionExecuter": "nodemon ./src/actionExecuter.js",
     "device": "nodemon ./device/device1.js"
   },
   "keywords": [],
@@ -28,7 +29,9 @@
     "method-override": "^3.0.0",
     "mongodb": "^3.6.0",
     "njwt": "^1.0.0",
+    "node-fetch": "^2.6.1",
     "node-static": "^0.7.11",
+    "nodemailer": "^6.4.14",
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
