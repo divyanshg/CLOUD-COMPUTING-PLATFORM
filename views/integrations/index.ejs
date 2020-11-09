@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actions</title>
+    <title>Integrations</title>
     <%- include('../headers.ejs'); %>
     <style>
         .actions{
@@ -262,7 +262,7 @@
         <header class="bg-white shadow mt-16 animate__animated animate__fadeIn animate__faster">
             <div class="flex max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <h1 class="text-3xl w-full font-bold leading-tight text-gray-900">
-                    Actions
+                    Integrations
                 </h1>
             </div>
         </header>
@@ -385,14 +385,14 @@
                 <div class="px-4 py-6 sm:px-0">
                     <div class="w-full h-auto">
                         <div class="row flex w-full animate__animated animate__fadeIn">
-                            <% actions.forEach(action => { %>
-                            <a href="/actions/<%= action.id %>/<%= projectID %>" class="widget relative actions w-1/6 p-4 px-5 rounded-lg m-2 shadow-lg cursor-pointer">
+                            <% integrations.forEach(integration => { %>
+                            <a href="/integrations/<%= integration.id %>/<%= projectID %>" class="widget relative actions w-1/6 p-4 px-5 rounded-lg m-2 shadow-lg cursor-pointer">
                                 <div
                                     class="widget-title py-2 pb-4 text-4xl font-bold text-white w-full">
-                                    <span><%= action.title %></span>
+                                    <span><%= integration.title %></span>
                                 </div>
                                 <div class="w-full flex h-auto p-2">
-                                    <span class="mb-6 absolute bottom-0 left-0 mx-4 text-white font-semibold text-lg uppercase py-2 px-4 rounded-full bg-black"><%= action.status %></span>
+                                    <span class="mb-6 absolute bottom-0 left-0 mx-4 text-white font-semibold text-lg uppercase py-2 px-4 rounded-full bg-black"><%= integration.status %></span>
                                     <span class="mb-6 absolute bottom-0 right-0 mx-4 text-white font-semibold text-lg uppercase py-3 px-5 rounded-full w-1/5">
                                         <img src="https://assets.ifttt.com/images/channels/65067518/icons/monochrome_regular.png" width="36" height="36" alt="Google Assistant" title="Google Assistant">
                                     </span>

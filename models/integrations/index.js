@@ -1,10 +1,10 @@
 const fetch = require('node-fetch');
 
 module.exports = {
-    allActions: () => {
+    allIntegrations: () => {
 
     },
-    getAction: () => {
+    getIntegration: (id) => {
         return {
             id: "n5ion5o",
             title: "Mail me when water tank is full",
@@ -12,13 +12,13 @@ module.exports = {
             endPoint: "assistant",
         }
     },
-    addAction: () => {
+    addIntegration: () => {
 
     },
-    checkAction: () => {
+    checkIntegration: () => {
 
     },
-    executeAction: (id, projectID) => {
+    executeIntegration: (id, projectID) => {
         fetch(`http://localhost:6001/execute/${id}/${projectID}`)
         .then(res => res.status)
         .then(status => console.log(status))

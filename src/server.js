@@ -76,8 +76,8 @@ app.use('/', require('../routes/index'))
 app.use('/create', require('../routes/create/index'))
 app.use('/policy', require('../routes/policy/index'))
 app.use('/devices', require('../routes/devices'))
-app.use('/actions', require('../routes/actions/index'))
 app.use('/api', require('../routes/api/index'))
+app.use('/integrations', require("../routes/integrations/index"))
 
 app.use(express.static('resources'))
 app.use('/resources', express.static(__dirname + '/resources'));
