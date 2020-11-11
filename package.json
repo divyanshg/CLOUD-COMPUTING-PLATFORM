@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon ./src/server.js",
+    "actionExecuter": "nodemon ./src/actionExecuter.js",
     "device": "nodemon ./device/device1.js"
   },
   "keywords": [],
@@ -22,20 +23,25 @@
     "express-graphql": "^0.11.0",
     "express-ip": "^1.0.4",
     "express-session": "^1.17.1",
+    "googleapis": "^39.2.0",
     "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "method-override": "^3.0.0",
     "mongodb": "^3.6.0",
     "njwt": "^1.0.0",
+    "node-fetch": "^2.6.1",
     "node-static": "^0.7.11",
+    "nodemailer": "^6.4.14",
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "promisify": "0.0.3",
     "public-ip": "^4.0.2",
     "request-ip": "^2.1.3",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
+    "twit": "^2.2.11",
     "uuid": "^8.3.0",
     "uuidv4": "^6.2.3"
   }
