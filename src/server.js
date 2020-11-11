@@ -2,6 +2,8 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
+const SERVER_ID = "WIN-10-SERVER.ccp.com"
+
 const express = require('express')
 
 const expressGraphQL = require("express-graphql").graphqlHTTP;
@@ -103,6 +105,7 @@ io.on('connection', (socket) => {
                     socket.join(device.id)
                 } else {
                     socket.disconnect()
+                    device.serverID = SERVER_ID
                     io.to(`dashboard_${device.ownerID}_iot`).emit('invalid_access_rejected', {
                         device,
                         error: "Another device tried to login with same credentials."

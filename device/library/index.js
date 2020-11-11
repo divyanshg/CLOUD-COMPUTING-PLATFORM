@@ -40,6 +40,7 @@ function login(token) {
                     var deviceRegion = status.device.region
                     console.log("REGION : " + chalk.bgBlue(` ${deviceRegion.toUpperCase()} `))
                     console.log("IP (on server) : ", chalk.yellowBright(status.device.ip))
+                    console.log("CONNECTED TO : ", chalk.yellowBright(status.device.serverID))
 
                     const device = {
                         info: status.device,
