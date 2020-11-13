@@ -109,11 +109,13 @@ io.on('connection', (socket) => {
 
     subscriber.on("device_connected", (channel, loginStatus) => {
         if (loginStatus.SERVER_ID == SERVER_ID) return
+        console.log("device_connected_recieved")
         loginDevice(io, socket, loginStatus.device)
     })
 
     subscriber.on("data_publish", (channel, { data, SERVER_ID }) => {
         if (SERVER_ID == SERVER_ID) return
+        console.log("data_publsih_recieved")
         console.log(data)
     })
 
@@ -126,7 +128,7 @@ io.on('connection', (socket) => {
         authorizeDevice(token)
             .then(async device => {
 
-                loginDevice(io, socket, device)
+                loginDevice(io, socket, device, token)
 
             })
             .catch(async err => {
@@ -241,7 +243,7 @@ io.on('connection', (socket) => {
 
 });
 
-async function loginDevice(io, socket, device) {
+async function loginDevice(io, socket, device, token) {
     if (typeof io.sockets.adapter.rooms[device.id] == 'undefined') {
         socket.join(device.id)
     } else {
