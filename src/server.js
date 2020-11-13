@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
-const SERVER_ID = "WIN-10-SERVER.ccp.com"
+const SERVER_ID = process.env.SERVERID
 
 const express = require('express')
 
@@ -19,6 +19,12 @@ var io = require('socket.io')(http);
 const session = require('express-session')
 const passport = require('passport')
 const flash = require('express-flash')
+
+const {
+    redis,
+    publisher,
+    subscriber
+} = require("../configs/redis-config")
 
 const port = process.env.PORT || 80
 
@@ -96,7 +102,16 @@ app.use('/internals', checkAuthenticated, expressGraphQL({
     graphiql: true
 }))
 
+
 io.on('connection', (socket) => {
+
+    //Redis Subscriptions
+
+    subscriber.on("device_connected", (channel, loginStatus) => {
+        if(loginStatus.SERVER_ID == SERVER_ID) return
+        io.to(loginStatus.broadcastTo).emit('device_online', loginStatus.device)
+    })
+
     socket.on('login', (token) => {
         authorizeDevice(token)
             .then(async device => {
@@ -105,9 +120,10 @@ io.on('connection', (socket) => {
                     socket.join(device.id)
                 } else {
                     socket.disconnect()
-                    device.serverID = SERVER_ID
+                    //device.serverID = SERVER_ID
                     io.to(`dashboard_${device.ownerID}_iot`).emit('invalid_access_rejected', {
                         device,
+                        SERVER_ID,
                         error: "Another device tried to login with same credentials."
                     })
                     return
@@ -119,18 +135,22 @@ io.on('connection', (socket) => {
                 delete device.signature;
                 delete device.policies;
 
-                io.to(device.id).emit(`login-status-${token}`, {
+                var loginStatus = {
                     code: 200,
                     error: null,
-                    device
-                })
-                io.to(device.id).emit(`login_status_`, {
-                    code: 200,
-                    error: null,
-                    device
-                })
+                    device,
+                    SERVER_ID,
+                }
+
+                io.to(device.id).emit(`login-status-${token}`, loginStatus)
+                io.to(device.id).emit(`login_status_`, loginStatus)
 
                 io.to(`dashboard_${device.ownerID}_iot`).emit('device_online', device)
+
+                //Publishing to redis
+
+                loginStatus.broadcastTo = `dashboard_${device.ownerID}_iot`
+                publisher.publish("device_connected", loginStatus)
 
                 await updateDeviceStatus(socket.id, device.id, socket.handshake, true)
 
@@ -154,34 +174,34 @@ io.on('connection', (socket) => {
 
 
         const {
-                author,
-                owner
-            } = await getAuthorInfo(data.deviceID, false)
+            author,
+            owner
+        } = await getAuthorInfo(data.deviceID, false)
 
 
 
-            const formattedData = {
-                feed,
-                id: v4(),
-                type: typeof data.content,
-                content: data.content,
-                author: {
-                    name: "IOT DASHBOARD",
-                    isDevice: false,
-                    dashboardInfo: await getDashboardInfo(data.dashboardId)
-                },
-                createdTimestamp: data.timeStamp
-            }
+        const formattedData = {
+            feed,
+            id: v4(),
+            type: typeof data.content,
+            content: data.content,
+            author: {
+                name: "IOT DASHBOARD",
+                isDevice: false,
+                dashboardInfo: await getDashboardInfo(data.dashboardId)
+            },
+            createdTimestamp: data.timeStamp
+        }
 
 
-            //io.to(data.deviceID).emit(feed.name, formattedData)
-            //io.to(data.deviceID).emit(feed.id, formattedData)
-            io.to(`dashboard_${device.ownerID}_iot`).emit('published', formattedData)
+        //io.to(data.deviceID).emit(feed.name, formattedData)
+        //io.to(data.deviceID).emit(feed.id, formattedData)
+        io.to(`dashboard_${device.ownerID}_iot`).emit('published', formattedData)
 
-            formattedData.author.address = socket.handshake.address.replace('::ffff:', '')
-            formattedData.author.time = socket.handshake.time
-            formattedData.author.dashboardId = data.dashboardId
-            await saveMessage(formattedData)
+        formattedData.author.address = socket.handshake.address.replace('::ffff:', '')
+        formattedData.author.time = socket.handshake.time
+        formattedData.author.dashboardId = data.dashboardId
+        await saveMessage(formattedData)
     })
 
     socket.on('publish', async data => {
@@ -189,7 +209,7 @@ io.on('connection', (socket) => {
         await checkPolicies(data.authorId, "Publish").then(async d => {
                 if (typeof io.sockets.adapter.rooms[data.authorId] == 'undefined') return
                 if (!io.sockets.adapter.rooms[data.authorId].sockets[socket.id]) return
-                
+
                 console.log(data)
                 // const feed = await getFeedInfo(data.feed),
                 //     device = await getDeviceinfo(data.deviceID),

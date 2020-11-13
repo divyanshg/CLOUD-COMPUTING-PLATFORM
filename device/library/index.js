@@ -6,7 +6,7 @@ var deviceInfo;
 var lastToken = ''
 var loggedOut = false
 
-socket = socket('http://192.168.31.183:3000/')
+socket = socket('http://iotine.zapto.org/')
 
 socket.on('disconnect', (s) => {
     //console.clear() 
@@ -40,7 +40,7 @@ function login(token) {
                     var deviceRegion = status.device.region
                     console.log("REGION : " + chalk.bgBlue(` ${deviceRegion.toUpperCase()} `))
                     console.log("IP (on server) : ", chalk.yellowBright(status.device.ip))
-                    console.log("CONNECTED TO : ", chalk.yellowBright(status.device.serverID))
+                    console.log("CONNECTED TO : ", chalk.yellowBright(status.SERVER_ID))
 
                     const device = {
                         info: status.device,
