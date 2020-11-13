@@ -107,13 +107,6 @@ io.on('connection', (socket) => {
 
     //Redis Subscriptions
 
-    subscriber.on("device_connected", (channel, loginStatus) => {
-        loginStatus = JSON.parse(loginStatus)
-        if (loginStatus.SERVER_ID == SERVER_ID) return
-        console.log("device_connected_recieved")
-        loginDevice(io, socket, loginStatus.device)
-    })
-
     subscriber.on("data_publish", (channel, incomingData) => {
         const { data, SERVER_ID } = JSON.parse(incomingData)
         if (SERVER_ID == SERVER_ID) return
@@ -277,11 +270,6 @@ async function loginDevice(io, socket, device, token) {
     io.to(device.id).emit(`login_status_`, loginStatus)
 
     io.to(`dashboard_${device.ownerID}_iot`).emit('device_online', device)
-
-    //Publishing to redis
-
-    loginStatus.broadcastTo = `dashboard_${device.ownerID}_iot`
-    publisher.publish("device_connected", JSON.stringify(loginStatus))
 
     await updateDeviceStatus(socket.id, device.id, socket.handshake, true)
 
