@@ -108,53 +108,25 @@ io.on('connection', (socket) => {
     //Redis Subscriptions
 
     subscriber.on("device_connected", (channel, loginStatus) => {
-        if(loginStatus.SERVER_ID == SERVER_ID) return
-        io.to(loginStatus.broadcastTo).emit('device_online', loginStatus.device)
+        if (loginStatus.SERVER_ID == SERVER_ID) return
+        loginDevice(io, socket, loginStatus.device)
+    })
+
+    subscriber.on("data_publish", (channel, { data, SERVER_ID }) => {
+        if (SERVER_ID == SERVER_ID) return
+        console.log(data)
+    })
+
+    subscriber.on("publish_err", (channel, { author, policy, SERVER_ID }) => {
+        if (SERVER_ID == SERVER_ID) return
+        io.to(author).emit('publish_err', "Publish was not allowed by device policies.\nPolicy : " + policy)
     })
 
     socket.on('login', (token) => {
         authorizeDevice(token)
             .then(async device => {
 
-                if (typeof io.sockets.adapter.rooms[device.id] == 'undefined') {
-                    socket.join(device.id)
-                } else {
-                    socket.disconnect()
-                    //device.serverID = SERVER_ID
-                    io.to(`dashboard_${device.ownerID}_iot`).emit('invalid_access_rejected', {
-                        device,
-                        SERVER_ID,
-                        error: "Another device tried to login with same credentials."
-                    })
-                    return
-                }
-
-                device.ip = socket.handshake.address.replace('::ffff:', '')
-                device.status = true
-
-                delete device.signature;
-                delete device.policies;
-
-                var loginStatus = {
-                    code: 200,
-                    error: null,
-                    device,
-                    SERVER_ID,
-                }
-
-                io.to(device.id).emit(`login-status-${token}`, loginStatus)
-                io.to(device.id).emit(`login_status_`, loginStatus)
-
-                io.to(`dashboard_${device.ownerID}_iot`).emit('device_online', device)
-
-                //Publishing to redis
-
-                loginStatus.broadcastTo = `dashboard_${device.ownerID}_iot`
-                publisher.publish("device_connected", loginStatus)
-
-                await updateDeviceStatus(socket.id, device.id, socket.handshake, true)
-
-                await clearCaches(device.id, socket)
+                loginDevice(io, socket, device)
 
             })
             .catch(async err => {
@@ -210,7 +182,11 @@ io.on('connection', (socket) => {
                 if (typeof io.sockets.adapter.rooms[data.authorId] == 'undefined') return
                 if (!io.sockets.adapter.rooms[data.authorId].sockets[socket.id]) return
 
-                console.log(data)
+
+                publisher.publish("data_publish", {
+                    data,
+                    SERVER_ID
+                })
                 // const feed = await getFeedInfo(data.feed),
                 //     device = await getDeviceinfo(data.deviceID),
                 //     {
@@ -238,6 +214,11 @@ io.on('connection', (socket) => {
             })
             .catch(policy => {
                 io.to(data.authorId).emit('publish_err', "Publish was not allowed by device policies.\nPolicy : " + policy)
+                publisher.publish("publish_err", {
+                    author: data.authorId,
+                    policy,
+                    SERVER_ID
+                })
                 return
             })
 
@@ -259,6 +240,48 @@ io.on('connection', (socket) => {
     })
 
 });
+
+async function loginDevice(io, socket, device) {
+    if (typeof io.sockets.adapter.rooms[device.id] == 'undefined') {
+        socket.join(device.id)
+    } else {
+        socket.disconnect()
+        //device.serverID = SERVER_ID
+        io.to(`dashboard_${device.ownerID}_iot`).emit('invalid_access_rejected', {
+            device,
+            SERVER_ID,
+            error: "Another device tried to login with same credentials."
+        })
+        return
+    }
+
+    device.ip = socket.handshake.address.replace('::ffff:', '')
+    device.status = true
+
+    delete device.signature;
+    delete device.policies;
+
+    var loginStatus = {
+        code: 200,
+        error: null,
+        device,
+        SERVER_ID,
+    }
+
+    io.to(device.id).emit(`login-status-${token}`, loginStatus)
+    io.to(device.id).emit(`login_status_`, loginStatus)
+
+    io.to(`dashboard_${device.ownerID}_iot`).emit('device_online', device)
+
+    //Publishing to redis
+
+    loginStatus.broadcastTo = `dashboard_${device.ownerID}_iot`
+    publisher.publish("device_connected", loginStatus)
+
+    await updateDeviceStatus(socket.id, device.id, socket.handshake, true)
+
+    await clearCaches(device.id, socket)
+}
 
 async function clearCaches(deviceId, socket) {
     var cache = await checkCache(deviceId)
