@@ -108,18 +108,21 @@ io.on('connection', (socket) => {
     //Redis Subscriptions
 
     subscriber.on("device_connected", (channel, loginStatus) => {
+        loginStatus = JSON.parse(loginStatus)
         if (loginStatus.SERVER_ID == SERVER_ID) return
         console.log("device_connected_recieved")
         loginDevice(io, socket, loginStatus.device)
     })
 
-    subscriber.on("data_publish", (channel, { data, SERVER_ID }) => {
+    subscriber.on("data_publish", (channel, incomingData) => {
+        const { data, SERVER_ID } = JSON.parse(incomingData)
         if (SERVER_ID == SERVER_ID) return
         console.log("data_publsih_recieved")
         console.log(data)
     })
 
-    subscriber.on("publish_err", (channel, { author, policy, SERVER_ID }) => {
+    subscriber.on("publish_err", (channel, incomingData) => {
+        const { author, policy, SERVER_ID } = JSON.parse(incomingData)
         if (SERVER_ID == SERVER_ID) return
         io.to(author).emit('publish_err', "Publish was not allowed by device policies.\nPolicy : " + policy)
     })
@@ -185,10 +188,10 @@ io.on('connection', (socket) => {
                 if (!io.sockets.adapter.rooms[data.authorId].sockets[socket.id]) return
 
 
-                publisher.publish("data_publish", {
+                publisher.publish("data_publish",JSON.stringify({
                     data,
                     SERVER_ID
-                })
+                }))
                 // const feed = await getFeedInfo(data.feed),
                 //     device = await getDeviceinfo(data.deviceID),
                 //     {
@@ -216,11 +219,11 @@ io.on('connection', (socket) => {
             })
             .catch(policy => {
                 io.to(data.authorId).emit('publish_err', "Publish was not allowed by device policies.\nPolicy : " + policy)
-                publisher.publish("publish_err", {
+                publisher.publish("publish_err", JSON.stringify({
                     author: data.authorId,
                     policy,
                     SERVER_ID
-                })
+                }))
                 return
             })
 
@@ -278,7 +281,7 @@ async function loginDevice(io, socket, device, token) {
     //Publishing to redis
 
     loginStatus.broadcastTo = `dashboard_${device.ownerID}_iot`
-    publisher.publish("device_connected", loginStatus)
+    publisher.publish("device_connected", JSON.stringify(loginStatus))
 
     await updateDeviceStatus(socket.id, device.id, socket.handshake, true)
 
