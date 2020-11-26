@@ -180,6 +180,7 @@ io.on('connection', (socket) => {
                 if (typeof io.sockets.adapter.rooms[data.authorId] == 'undefined') return
                 if (!io.sockets.adapter.rooms[data.authorId].sockets[socket.id]) return
 
+                console.log(data)
 
                 publisher.publish("data_publish",JSON.stringify({
                     data,
